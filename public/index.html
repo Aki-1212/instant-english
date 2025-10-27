@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>瞬間英作文ゲーム</title>
+    <link rel="stylesheet" href="/styles/style.css"> <!-- CSSスタイル -->
+</head>
+<body>
+    <div id="game-container">
+        <header>
+            <h1>瞬間英作文ゲーム</h1>
+            <div id="difficulty-selector">
+                <button onclick="startGame(1)">初心者</button>
+                <button onclick="startGame(2)">初級</button>
+                <button onclick="startGame(3)">中級</button>
+                <button onclick="startGame(4)">上級</button>
+                <button onclick="startGame(5)">超上級</button>
+            </div>
+        </header>
+
+        <main id="game-content">
+            <!-- ゲームの進行に応じてコンテンツを更新する -->
+            <div id="question-container">
+                <p id="question-text">日本語の問題文がここに表示されます。</p>
+                <div id="answer-options">
+                    <!-- ここに選択肢が表示されます -->
+                </div>
+                <button id="input-switch-button" onclick="toggleInputMode()">入力式に切り替え</button>
+            </div>
+
+            <div id="timer-container">
+                <p>残り時間: <span id="time-left">20</span> 秒</p>
+            </div>
+
+            <div id="feedback"></div>
+        </main>
+
+        <footer>
+            <p>&copy; 2025 瞬間英作文ゲーム</p>
+        </footer>
+    </div>
+
+    <script src="/node_modules/phaser/dist/phaser.min.js"></script>
+    <script type="module" src="src/game/Game.js"></script>  <!-- ゲームロジック -->
+    <script type="module" src="src/game/Stage.js"></script> <!-- ステージロジック -->
+    <script type="module" src="lib/supabaseClient.js"></script> <!-- Supabaseクライアント -->
+    <script>
+        // ゲームインスタンス
+        let gameInstance = null;
+
+        // ゲーム開始時に呼ばれる
+        function startGame(difficulty) {
+            if (gameInstance) {
+                console.log("ゲームが既に開始されています");
+                return;
+            }
+            console.log("難易度選択: " + difficulty);
+
+            // 新しいゲームインスタンスを作成
+            gameInstance = new Game();
+            gameInstance.difficulty = difficulty;
+            gameInstance.start();  // ゲーム開始
+
+            // ゲーム画面を更新
+            document.getElementById("difficulty-selector").style.display = "none";  // 難易度選択画面を非表示
+            document.getElementById("game-content").style.display = "block";  // ゲームコンテンツを表示
+        }
+
+        // 入力式切り替えボタンの処理
+        function toggleInputMode() {
+            console.log("入力式に切り替え");
+            // Stage.js で入力式に切り替える処理を行う
+            gameInstance.currentStage.toggleInputMode();  // Stage.js で入力式に切り替え
+        }
+
+        // タイマーの更新処理
+        function updateTimer() {
+            if (!gameInstance || !gameInstance.currentStage) {
+                return;  // currentStageがnullなら何もしない
+            }
+
+            let timeLeft = document.getElementById("time-left");
+            let currentTime = parseInt(timeLeft.innerText);
+            if (currentTime > 0) {
+                timeLeft.innerText = currentTime - 1;
+            } else {
+                console.log("時間切れ！");
+                gameInstance.currentStage.nextQuestion();  // 次の問題へ
+            }
+        }
+
+        // タイマーのカウントダウン開始
+        setInterval(updateTimer, 1000);  // 1秒ごとにタイマーを更新
+
+        // ゲーム内で問題を更新する関数
+        function updateQuestion(questionText, answerOptions) {
+            // 問題文を更新
+            document.getElementById("question-text").innerText = questionText;
+
+            // 選択肢を更新
+            const answerContainer = document.getElementById("answer-options");
+            answerContainer.innerHTML = "";  // 現在の選択肢をクリア
+            answerOptions.forEach(option => {
+                const button = document.createElement("button");
+                button.innerText = option;
+                button.onclick = () => {
+                    gameInstance.currentStage.checkAnswer(option);  // 解答を確認
+                };
+                answerContainer.appendChild(button);
+            });
+        }
+    </script>
+</body>
+</html>

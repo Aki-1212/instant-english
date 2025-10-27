@@ -1,0 +1,21 @@
+{
+  "name": "instant-english",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@vercel/node": "^5.5.0",
+    "express": "^5.1.0",
+    "phaser": "^3.90.0",
+    "supabase": "^2.53.6"
+  },
+  "devDependencies": {
+    "http-server": "^14.1.1"
+  }
+}
