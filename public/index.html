@@ -14,16 +14,32 @@
     <div id="stage-select">
       <h2>難易度と入力方式を選んでください</h2>
 
-      <div class="difficulty-area">
-        <label><input type="radio" name="difficulty" value="easy" checked> 初級</label>
-        <label><input type="radio" name="difficulty" value="normal"> 中級</label>
-        <label><input type="radio" name="difficulty" value="hard"> 上級</label>
+      <!-- 難易度 -->
+      <div id="difficulty-options">
+        <label class="option-card">
+          <input type="radio" name="difficulty" value="easy" checked>
+          <span>初級</span>
+        </label>
+        <label class="option-card">
+          <input type="radio" name="difficulty" value="normal">
+          <span>中級</span>
+        </label>
+        <label class="option-card">
+          <input type="radio" name="difficulty" value="hard">
+          <span>上級</span>
+        </label>
       </div>
 
-      <div class="mode-area">
-        <h3>回答方式</h3>
-        <label><input type="radio" name="mode" value="text" checked> 入力方式</label>
-        <label><input type="radio" name="mode" value="block"> ブロック方式</label>
+      <!-- モード -->
+      <div id="mode-options">
+        <label class="option-card">
+          <input type="radio" name="mode" value="text" checked>
+          <span>入力方式</span>
+        </label>
+        <label class="option-card">
+          <input type="radio" name="mode" value="block">
+          <span>ブロック方式</span>
+        </label>
       </div>
 
       <br>
@@ -65,6 +81,15 @@
   </div>
 
   <script type="module" src="./Game.js"></script>
+  <script>
+    // ラジオカード選択時にselectedクラス付与
+    document.querySelectorAll('.option-card input[type="radio"]').forEach(radio => {
+      radio.addEventListener('change', () => {
+        const group = radio.closest('.option-group') || radio.closest('#difficulty-options') || radio.closest('#mode-options');
+        group.querySelectorAll('.option-card').forEach(card => card.classList.remove('selected'));
+        radio.closest('.option-card').classList.add('selected');
+      });
+    });
+  </script>
 </body>
 </html>
-
