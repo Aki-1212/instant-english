@@ -189,6 +189,8 @@ function showResult() {
 
 // 結果画面でレベル選択に戻る
 document.getElementById('back-to-stage-btn2').addEventListener('click', () => {
+  game.style.display = 'none'
+  modeSelect.style.display = 'none'
   resultScreen.style.display = 'none'
   stageSelect.style.display = 'block'
   window.answerHistory = []
