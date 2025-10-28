@@ -1,4 +1,4 @@
-import { supabase } from '../lib/supabaseClient.js'
+import { supabase } from './lib/supabaseClient.js'
 
 let questions = []
 let currentIndex = 0
