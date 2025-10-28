@@ -139,17 +139,17 @@ function checkAnswer(userAnswer) {
   let resultText
 
   if (!userAnswer) {
-    resultText = `⚠ 未記入 正しい答え: ${correctAnswer}`
+    resultText = `❌ 例: ${correctAnswer}`
   } else if (isCorrect) {
     resultText = '✅ 正解！'
   } else {
-    resultText = `❌ 不正解 正しい答え: ${correctAnswer}`
+    resultText = `❌ 例: ${correctAnswer}`
   }
 
   // 結果表示と色
   const resultEl = document.getElementById('result')
   resultEl.textContent = resultText
-  resultEl.style.color = !userAnswer ? '#f59e0b' // 未記入オレンジ
+  resultEl.style.color = !userAnswer ? '#dc2626' // 未記入も赤
                       : isCorrect ? '#059669' // 緑
                       : '#dc2626' // 赤
 
