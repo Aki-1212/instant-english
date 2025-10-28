@@ -1,82 +1,90 @@
-// 簡易的な問題データ（後でSupabaseから取得可能）
-const questions = [
-  { japanese: "私は学生です。", english: "I am a student." },
-  { japanese: "彼は昨日ここに来ました。", english: "He came here yesterday." },
-  { japanese: "あなたはコーヒーが好きですか？", english: "Do you like coffee?" }
-]
+import { supabase } from '../lib/supabaseClient.js'
 
+let questions = []
 let currentIndex = 0
-let startTime
-let selectedDifficulty = null
+let startTime, endTime
+let currentDifficulty = 'easy'
 
-const stageSelect = document.getElementById("stage-select")
-const quiz = document.getElementById("quiz")
-const result = document.getElementById("result")
+// 要素取得
+const stageSelect = document.getElementById('stage-select')
+const game = document.getElementById('game')
+const resultScreen = document.getElementById('result-screen')
 
-const questionEl = document.getElementById("japanese-question")
-const inputEl = document.getElementById("english-answer")
-const feedbackEl = document.getElementById("feedback")
-const nextBtn = document.getElementById("next-question")
-const elapsedTimeEl = document.getElementById("elapsed-time")
-
-// 難易度選択
-document.querySelectorAll("#stage-select button").forEach(btn => {
-  btn.addEventListener("click", () => {
-    selectedDifficulty = parseInt(btn.dataset.difficulty)
-    startQuiz()
+// 難易度選択ボタン
+document.querySelectorAll('.difficulty-btn').forEach(btn => {
+  btn.addEventListener('click', async () => {
+    currentDifficulty = btn.dataset.difficulty
+    document.getElementById('difficulty').textContent = `難易度：${btn.textContent}`
+    await loadQuestions(currentDifficulty)
   })
 })
 
-function startQuiz() {
-  stageSelect.classList.add("hidden")
-  quiz.classList.remove("hidden")
+// 問題をSupabaseから取得
+async function loadQuestions(difficulty) {
+  stageSelect.style.display = 'none'
+  game.style.display = 'block'
+
+  const { data, error } = await supabase
+    .from('questions')
+    .select('*')
+    .eq('difficulty', difficulty)
+    .order('id', { ascending: true })
+
+  if (error) {
+    console.error('問題取得エラー:', error)
+    alert('問題を取得できませんでした。')
+    return
+  }
+
+  questions = data
   currentIndex = 0
-  startTime = Date.now()
+  startTime = new Date()
   showQuestion()
 }
 
+// 問題を表示
 function showQuestion() {
+  if (currentIndex >= questions.length) {
+    showResult()
+    return
+  }
+
   const q = questions[currentIndex]
-  questionEl.textContent = q.japanese
-  inputEl.value = ""
-  feedbackEl.textContent = ""
-  nextBtn.classList.add("hidden")
+  document.getElementById('question').textContent = q.question_jp
+  document.getElementById('answer').value = ''
+  document.getElementById('result').textContent = ''
 }
 
-document.getElementById("submit-answer").addEventListener("click", () => {
-  const userAnswer = inputEl.value.trim().toLowerCase()
-  const correctAnswer = questions[currentIndex].english.toLowerCase()
+// 回答ボタン押下
+document.getElementById('submit-btn').addEventListener('click', () => {
+  const userAnswer = document.getElementById('answer').value.trim()
+  const correctAnswer = questions[currentIndex].answer_en.trim()
 
-  if (userAnswer === correctAnswer || userAnswer.includes(correctAnswer.split(" ")[0])) {
-    feedbackEl.textContent = "✅ 正解！"
-    feedbackEl.style.color = "green"
-  } else {
-    feedbackEl.textContent = `❌ 不正解。正解は: ${questions[currentIndex].english}`
-    feedbackEl.style.color = "red"
-  }
+  const normalize = (str) => str.toLowerCase().replace(/[.,!?]/g, '').trim()
+  const isCorrect = normalize(userAnswer) === normalize(correctAnswer)
 
-  nextBtn.classList.remove("hidden")
-})
+  document.getElementById('result').textContent = isCorrect
+    ? '✅ 正解！'
+    : `❌ 不正解\n正しい答え: ${correctAnswer}`
 
-nextBtn.addEventListener("click", () => {
   currentIndex++
-  if (currentIndex < questions.length) {
-    showQuestion()
-  } else {
-    endQuiz()
-  }
+  setTimeout(showQuestion, 1500)
 })
 
-function endQuiz() {
-  quiz.classList.add("hidden")
-  result.classList.remove("hidden")
-
-  const elapsedSec = ((Date.now() - startTime) / 1000).toFixed(1)
-  elapsedTimeEl.textContent = elapsedSec
+// 結果表示
+function showResult() {
+  endTime = new Date()
+  const timeSec = ((endTime - startTime) / 1000).toFixed(2)
+  game.style.display = 'none'
+  resultScreen.style.display = 'block'
+  document.getElementById('summary').innerHTML = `
+    全${questions.length}問完了！<br>
+    経過時間：${timeSec} 秒
+  `
 }
 
-// リトライ
-document.getElementById("retry").addEventListener("click", () => {
-  result.classList.add("hidden")
-  stageSelect.classList.remove("hidden")
+// リスタート
+document.getElementById('restart-btn').addEventListener('click', () => {
+  resultScreen.style.display = 'none'
+  stageSelect.style.display = 'block'
 })
