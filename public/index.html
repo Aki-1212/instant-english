@@ -3,40 +3,38 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>瞬間英作文トレーニング</title>
+  <title>Instant English</title>
   <link rel="stylesheet" href="./styles/style.css">
 </head>
 <body>
   <div id="app">
-    <!-- ステージ選択 -->
+    <h1>Instant English</h1>
+
+    <!-- 難易度選択 -->
     <div id="stage-select">
       <h2>難易度を選んでください</h2>
-      <div class="buttons">
-        <button data-difficulty="1">初級</button>
-        <button data-difficulty="2">初級＋</button>
-        <button data-difficulty="3">中級</button>
-        <button data-difficulty="4">上級</button>
-        <button data-difficulty="5">超上級</button>
-      </div>
+      <button class="difficulty-btn" data-difficulty="easy">初級</button>
+      <button class="difficulty-btn" data-difficulty="normal">中級</button>
+      <button class="difficulty-btn" data-difficulty="hard">上級</button>
     </div>
 
-    <!-- 問題画面 -->
-    <div id="quiz" class="hidden">
-      <p id="japanese-question"></p>
-      <input type="text" id="english-answer" placeholder="英語で入力" />
-      <button id="submit-answer">送信</button>
-      <p id="feedback"></p>
-      <button id="next-question" class="hidden">次へ</button>
+    <!-- ゲーム画面 -->
+    <div id="game" style="display: none;">
+      <p id="difficulty"></p>
+      <p id="question"></p>
+      <input type="text" id="answer" placeholder="英語で入力" />
+      <button id="submit-btn">回答</button>
+      <p id="result"></p>
     </div>
 
     <!-- 結果画面 -->
-    <div id="result" class="hidden">
-      <h2>お疲れさまでした！</h2>
-      <p>経過時間: <span id="elapsed-time"></span> 秒</p>
-      <button id="retry">もう一度</button>
+    <div id="result-screen" style="display: none;">
+      <h2>結果</h2>
+      <p id="summary"></p>
+      <button id="restart-btn">もう一度</button>
     </div>
   </div>
 
-  <script src="./Game.js"></script>
+  <script type="module" src="./Game.js"></script>
 </body>
 </html>
