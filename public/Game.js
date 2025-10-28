@@ -12,7 +12,8 @@ let answerHistory = []
 const stageSelect = document.getElementById('stage-select')
 const game = document.getElementById('game')
 const resultScreen = document.getElementById('result-screen')
-const summaryEl = document.getElementById('summary')
+const summaryTimeEl = document.getElementById('summary-time')
+const resultsUl = document.getElementById('resultsUl')
 
 // 難易度選択ボタン
 document.querySelectorAll('.difficulty-btn').forEach(btn => {
@@ -28,7 +29,7 @@ async function loadQuestions(difficulty) {
   stageSelect.style.display = 'none'
   game.style.display = 'block'
 
-  answerHistory = [] // 前回の履歴をクリア
+  answerHistory = [] // 前回の履歴クリア
   const { data, error } = await supabase
     .from('questions')
     .select('*')
@@ -67,20 +68,23 @@ function showQuestion() {
 
 // 回答ボタン押下
 document.getElementById('submit-btn').addEventListener('click', () => {
-  const userAnswer = document.getElementById('answer').value.trim()
+  let userAnswer = document.getElementById('answer').value.trim()
   const correctAnswer = questions[currentIndex].answer_en.trim()
 
+  // 未記入の場合
+  if (!userAnswer) userAnswer = '未記入'
+
   const normalize = (str) => str.toLowerCase().replace(/[.,!?]/g, '').trim()
-  const isCorrect = normalize(userAnswer) === normalize(correctAnswer)
+  const isCorrect = userAnswer !== '未記入' && normalize(userAnswer) === normalize(correctAnswer)
 
   // 正誤表示（ゲーム中のみ）
   const resultEl = document.getElementById('result')
   resultEl.textContent = isCorrect
-    ? '〇 '
-    : `ｘ ${correctAnswer}`
+    ? '✅ '
+    : `❌ `
   resultEl.className = isCorrect ? 'correct' : 'incorrect'
 
-  // 履歴に追加（結果画面用）
+  // 履歴に追加
   answerHistory.push({
     question: questions[currentIndex].question_jp,
     userAnswer,
@@ -89,7 +93,7 @@ document.getElementById('submit-btn').addEventListener('click', () => {
   })
 
   currentIndex++
-  setTimeout(showQuestion, 1500)
+  setTimeout(showQuestion, 1200)
 })
 
 // 結果表示
@@ -99,23 +103,21 @@ function showResult() {
   game.style.display = 'none'
   resultScreen.style.display = 'block'
 
-  // 結果画面に全履歴表示
-  let historyHtml = '<ul>'
-  answerHistory.forEach((a, i) => {
-    historyHtml += `<li class="${a.isCorrect ? 'correct' : 'incorrect'}">
-      Q${i + 1}: ${a.question} <br>
-      あなたの答え: ${a.userAnswer} <br>
-      正解: ${a.correctAnswer} (${a.isCorrect ? '〇' : '×'})
-    </li>`
-  })
-  historyHtml += '</ul>'
+  // 経過時間表示
+  summaryTimeEl.textContent = `全${questions.length}問完了！ 経過時間：${timeSec}秒`
 
-  summaryEl.innerHTML = `
-    全${questions.length}問完了！<br>
-    経過時間：${timeSec} 秒
-    <h3>回答履歴</h3>
-    ${historyHtml}
-  `
+  // 回答履歴表示
+  resultsUl.innerHTML = ''
+  answerHistory.forEach((a, i) => {
+    const li = document.createElement('li')
+    li.className = a.isCorrect ? 'correct' : 'incorrect'
+    li.innerHTML = `
+      <strong>Q${i + 1}:</strong> ${a.question} <br>
+      <strong>あなたの答え:</strong> ${a.userAnswer} <br>
+      <strong>正解:</strong> ${a.correctAnswer} (${a.isCorrect ? '〇' : '×'})
+    `
+    resultsUl.appendChild(li)
+  })
 }
 
 // リスタート
