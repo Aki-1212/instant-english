@@ -4,36 +4,32 @@ let questions = []
 let currentIndex = 0
 let startTime, endTime
 let currentDifficulty = 'easy'
-let inputMode = 'text' // text or block
-let userAnswerWords = []
+let currentMode = 'input'
+let results = []
 
-// 要素取得
 const stageSelect = document.getElementById('stage-select')
-const modeSelect = document.getElementById('mode-select')
 const game = document.getElementById('game')
 const resultScreen = document.getElementById('result-screen')
 
-// 難易度選択ボタン
+// 難易度ボタン
 document.querySelectorAll('.difficulty-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
+  btn.addEventListener('click', async () => {
     currentDifficulty = btn.dataset.difficulty
     document.getElementById('difficulty').textContent = `難易度：${btn.textContent}`
-    stageSelect.style.display = 'none'
-    modeSelect.style.display = 'block'
-  })
-})
-
-// モード選択ボタン
-document.querySelectorAll('.mode-btn').forEach(btn => {
-  btn.addEventListener('click', async () => {
-    inputMode = btn.dataset.mode
-    modeSelect.style.display = 'none'
     await loadQuestions(currentDifficulty)
   })
 })
 
-// 問題をSupabaseから取得
+// モード選択
+document.querySelectorAll('input[name="mode"]').forEach(radio => {
+  radio.addEventListener('change', () => {
+    currentMode = radio.value
+  })
+})
+
+// Supabaseから問題取得
 async function loadQuestions(difficulty) {
+  stageSelect.style.display = 'none'
   game.style.display = 'block'
 
   const { data, error } = await supabase
@@ -50,11 +46,12 @@ async function loadQuestions(difficulty) {
 
   questions = data
   currentIndex = 0
+  results = []
   startTime = new Date()
   showQuestion()
 }
 
-// 問題を表示
+// 問題表示
 function showQuestion() {
   if (currentIndex >= questions.length) {
     showResult()
@@ -63,94 +60,83 @@ function showQuestion() {
 
   const q = questions[currentIndex]
   document.getElementById('question').textContent = q.question_jp
-  document.getElementById('result').textContent = ''
   document.getElementById('progress').textContent = `問題 ${currentIndex + 1} / ${questions.length}`
+  document.getElementById('result').textContent = ''
 
-  if (inputMode === 'text') {
-    document.getElementById('text-input-area').style.display = 'block'
-    document.getElementById('block-input-area').style.display = 'none'
-    document.getElementById('answer').value = ''
-  } else if (inputMode === 'block') {
-    document.getElementById('text-input-area').style.display = 'none'
-    document.getElementById('block-input-area').style.display = 'block'
+  // モードによって表示切替
+  if (currentMode === 'input') {
+    document.getElementById('answer').style.display = 'block'
+    document.getElementById('submit-btn').style.display = 'block'
+    document.getElementById('block-area').style.display = 'none'
+    document.getElementById('block-input').style.display = 'none'
+  } else {
+    // 単語ブロック
+    document.getElementById('answer').style.display = 'none'
+    document.getElementById('submit-btn').style.display = 'none'
+    document.getElementById('block-area').style.display = 'block'
+    document.getElementById('block-input').style.display = 'block'
+
     setupWordBlocks(q.answer_en)
   }
 }
 
-// 単語ブロック生成
-function setupWordBlocks(answer) {
-  userAnswerWords = []
-  const display = document.getElementById('user-block-display')
-  const blocks = document.getElementById('word-blocks')
-  display.textContent = ''
-  blocks.innerHTML = ''
-
-  const words = answer.split(' ')
-  const shuffled = shuffle([...words]) // 配列シャッフル
-  shuffled.forEach(word => {
-    const btn = document.createElement('button')
-    btn.textContent = word
-    btn.className = 'word-btn'
-    btn.addEventListener('click', () => {
-      userAnswerWords.push(word)
-      updateBlockDisplay()
-      btn.disabled = true
-    })
-    blocks.appendChild(btn)
-  })
-}
-
-function updateBlockDisplay() {
-  document.getElementById('user-block-display').textContent = userAnswerWords.join(' ')
-}
-
-// シャッフル関数
-function shuffle(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1))
-    ;[array[i], array[j]] = [array[j], array[i]]
-  }
-  return array
-}
-
-// --- 回答判定 ---
-
-// テキスト入力
+// 入力式回答
 document.getElementById('submit-btn').addEventListener('click', () => {
   const userAnswer = document.getElementById('answer').value.trim()
   checkAnswer(userAnswer)
 })
 
-// 単語ブロック入力
-document.getElementById('block-submit-btn').addEventListener('click', () => {
-  checkAnswer(userAnswerWords.join(' '))
-})
+// 単語ブロック生成
+function setupWordBlocks(answer) {
+  const blockArea = document.getElementById('block-area')
+  const blockInput = document.getElementById('block-input')
+  blockArea.innerHTML = ''
+  blockInput.value = ''
 
+  const words = answer.split(' ')
+  words.sort(() => Math.random() - 0.5) // シャッフル
+
+  words.forEach(word => {
+    const btn = document.createElement('button')
+    btn.textContent = word
+    btn.style.margin = '4px'
+    btn.style.backgroundColor = '#f97316'
+    btn.style.color = 'white'
+    btn.style.fontSize = '16px'
+    btn.addEventListener('click', () => {
+      blockInput.value += (blockInput.value ? ' ' : '') + word
+    })
+    blockArea.appendChild(btn)
+  })
+
+  // 回答ボタンも追加
+  let submitBtn = document.createElement('button')
+  submitBtn.textContent = '回答'
+  submitBtn.style.display = 'block'
+  submitBtn.style.marginTop = '10px'
+  submitBtn.addEventListener('click', () => {
+    checkAnswer(blockInput.value.trim())
+  })
+  blockArea.appendChild(submitBtn)
+}
+
+// 判定関数
 function checkAnswer(userAnswer) {
   const correctAnswer = questions[currentIndex].answer_en.trim()
-  const normalize = (str) => str.toLowerCase().replace(/[.,!?]/g, '').trim()
-  let resultText
-  if (!userAnswer) {
-    resultText = `⚠ 未記入 正しい答え: ${correctAnswer}`
-  } else if (normalize(userAnswer) === normalize(correctAnswer)) {
-    resultText = '✅ 例：${correctAnswer}'
-  } else {
-    resultText = `❌ 例：${correctAnswer}`
-  }
+  const normalize = str => str.toLowerCase().replace(/[.,!?]/g, '').trim()
+  const isCorrect = normalize(userAnswer) === normalize(correctAnswer)
 
-  document.getElementById('result').textContent = resultText
+  document.getElementById('result').textContent = isCorrect ? '✅ 正解！' : '❌ 例：${correctAnswer}'
 
-  // 履歴に追加
-  if (!window.answerHistory) window.answerHistory = []
-  window.answerHistory.push({
+  results.push({
     question: questions[currentIndex].question_jp,
-    userAnswer: userAnswer || '未記入',
-    correctAnswer: correctAnswer,
-    isCorrect: normalize(userAnswer) === normalize(correctAnswer)
+    user: userAnswer || '(未記入)',
+    correct: correctAnswer,
+    isCorrect
   })
 
   currentIndex++
-  setTimeout(showQuestion, 1500)
+  setTimeout(showQuestion, 1000)
 }
 
 // 結果表示
@@ -159,7 +145,6 @@ function showResult() {
   const timeSec = ((endTime - startTime) / 1000).toFixed(2)
   game.style.display = 'none'
   resultScreen.style.display = 'block'
-
   document.getElementById('summary').innerHTML = `
     全${questions.length}問完了！<br>
     経過時間：${timeSec} 秒
@@ -167,10 +152,10 @@ function showResult() {
 
   const ul = document.getElementById('resultsUl')
   ul.innerHTML = ''
-  window.answerHistory.forEach(item => {
+  results.forEach(r => {
     const li = document.createElement('li')
-    li.textContent = `Q: ${item.question}\nあなた: ${item.userAnswer}\n正解: ${item.correctAnswer}`
-    li.className = item.isCorrect ? 'correct' : 'incorrect'
+    li.textContent = `${r.question}\nあなたの答え: ${r.user}\n正解: ${r.correct}`
+    li.className = r.isCorrect ? 'correct' : 'incorrect'
     ul.appendChild(li)
   })
 }
@@ -179,5 +164,4 @@ function showResult() {
 document.getElementById('restart-btn').addEventListener('click', () => {
   resultScreen.style.display = 'none'
   stageSelect.style.display = 'block'
-  window.answerHistory = []
 })
