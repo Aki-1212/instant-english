@@ -194,7 +194,7 @@ button:disabled {
   flex-wrap: wrap;
   gap: 6px;
   justify-content: center;
-  background: #fff;
+  background: #a9a9a9;
   border: 2px dashed #ccc;
   border-radius: 10px;
   padding: 10px;
@@ -261,4 +261,5 @@ button:disabled {
     flex: 0 0 auto; /* 横並び維持 */
   }
 }
+
 
