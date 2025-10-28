@@ -226,6 +226,41 @@ button:disabled {
   background: #bfdbfe;
 }
 
+.time-card {
+  background: #f9fafb;
+  border: 2px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 20px 25px;
+  margin: 20px auto;
+  text-align: center;
+  width: fit-content;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.time-row {
+  margin: 8px 0;
+  font-size: 1.2rem;
+}
+
+.label {
+  font-weight: 600;
+  color: #374151;
+}
+
+.value {
+  font-weight: 700;
+  margin-left: 4px;
+}
+
+.value.now {
+  color: #059669; /* グリーン：今回 */
+}
+
+.value.prev {
+  color: #2563eb; /* ブルー：前回 */
+}
+
+
 /* ====================== */
 /* アニメーション */
 /* ====================== */
@@ -264,3 +299,4 @@ button:disabled {
     flex: 0 0 auto; /* 横並び維持 */
   }
 }
+
