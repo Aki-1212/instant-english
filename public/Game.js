@@ -76,8 +76,8 @@ document.getElementById('submit-btn').addEventListener('click', () => {
   // 正誤表示（ゲーム中のみ）
   const resultEl = document.getElementById('result')
   resultEl.textContent = isCorrect
-    ? '✅ 正解！'
-    : `❌ 不正解\n正しい答え: ${correctAnswer}`
+    ? '〇 '
+    : `ｘ ${correctAnswer}`
   resultEl.className = isCorrect ? 'correct' : 'incorrect'
 
   // 履歴に追加（結果画面用）
