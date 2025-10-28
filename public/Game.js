@@ -5,7 +5,7 @@ let currentIndex = 0
 let startTime, endTime
 let currentDifficulty = 'easy'
 let inputMode = 'text'
-let userAnswerWords = []
+let userAnswerWords = [] // { word, btn, removed }
 let isSubmitting = false
 
 // 要素取得
@@ -20,7 +20,7 @@ document.querySelectorAll('.difficulty-btn').forEach(btn => {
     currentDifficulty = btn.dataset.difficulty
     inputMode = selectedMode
 
-    document.getElementById('difficulty').textContent = 
+    document.getElementById('difficulty').textContent =
       `難易度：${currentDifficulty === 'easy' ? '初級' : currentDifficulty === 'normal' ? '中級' : '上級'}`
 
     stageSelect.style.display = 'none'
@@ -95,30 +95,41 @@ function setupWordBlocks(answer) {
     const btn = document.createElement('button')
     btn.textContent = word
     btn.className = 'word-btn'
-    btn.addEventListener('click', () => selectWord(word, btn))
+    btn.addEventListener('click', () => toggleWord(word, btn))
     blocks.appendChild(btn)
   })
+}
+
+// --- ブロック押下で追加・削除を切り替え ---
+function toggleWord(word, btn) {
+  const existing = userAnswerWords.find(item => item.word === word && !item.removed)
+  if (existing) {
+    // すでに選ばれていた → 取り消す
+    existing.removed = true
+    btn.disabled = false
+  } else {
+    // 新しく追加
+    userAnswerWords.push({ word, btn, removed: false })
+    btn.disabled = true
+  }
   updateBlockDisplay()
 }
 
-// --- 選択・解除 ---
-function selectWord(word, btn) {
-  userAnswerWords.push({ word, btn })
-  btn.disabled = true
-  updateBlockDisplay()
-}
-
+// --- 上部の文エリア更新 ---
 function updateBlockDisplay() {
   const display = document.getElementById('user-block-display')
   display.innerHTML = ''
 
+  // removed=false のみを順番に表示
   userAnswerWords.forEach((item, index) => {
+    if (item.removed) return
+
     const selectedBtn = document.createElement('button')
     selectedBtn.textContent = item.word
     selectedBtn.className = 'selected-word-btn'
     selectedBtn.addEventListener('click', () => {
+      item.removed = true
       item.btn.disabled = false
-      userAnswerWords.splice(index, 1)
       updateBlockDisplay()
     })
     display.appendChild(selectedBtn)
@@ -151,7 +162,7 @@ function handleSubmit() {
   const userAnswer =
     inputMode === 'text'
       ? document.getElementById('answer').value.trim()
-      : userAnswerWords.map(w => w.word).join(' ')
+      : userAnswerWords.filter(w => !w.removed).map(w => w.word).join(' ')
 
   checkAnswer(userAnswer)
   setTimeout(() => (isSubmitting = false), 500)
