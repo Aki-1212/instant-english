@@ -187,15 +187,10 @@ function showResult() {
   })
 }
 
-// リスタート
-document.getElementById('restart-btn').addEventListener('click', () => {
+// 結果画面でレベル選択に戻る
+document.getElementById('back-to-stage-btn2').addEventListener('click', () => {
   resultScreen.style.display = 'none'
   stageSelect.style.display = 'block'
   window.answerHistory = []
-  document.getElementById('question').textContent = ''
-  document.getElementById('progress').textContent = ''
-  document.getElementById('result').textContent = ''
-  document.getElementById('answer').value = ''
-  document.getElementById('user-block-display').textContent = ''
-  document.getElementById('word-blocks').innerHTML = ''
 })
+
