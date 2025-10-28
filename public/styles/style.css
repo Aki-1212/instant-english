@@ -100,6 +100,40 @@ button:hover {
   color: #dc2626;
 }
 
+/* 単語ブロックボタン */
+.word-btn {
+  background-color: #3b82f6; /* 青系 */
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 10px 15px;
+  font-size: 18px;
+  margin: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.word-btn:hover {
+  background-color: #2563eb;
+}
+
+.word-btn:disabled {
+  background-color: #94a3b8; /* 押したらグレーに */
+  cursor: default;
+  opacity: 0.7;
+}
+
+/* 単語入力表示 */
+#user-block-display {
+  font-size: 22px; /* 大きく表示 */
+  font-weight: 600;
+  color: #111;
+  margin-bottom: 15px;
+  min-height: 30px;
+  word-wrap: break-word;
+}
+
+
 /* アニメーション */
 @keyframes pulse {
   0% { transform: scale(1); opacity: 1; }
@@ -120,3 +154,4 @@ button:hover {
   .speak-small-btn { font-size: 16px; margin-left: 4px; }
   #speakBtn { font-size: 20px; }
 }
+
