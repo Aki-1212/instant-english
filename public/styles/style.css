@@ -1,6 +1,6 @@
-/* =========================================================
-   📘 基本レイアウト
-========================================================= */
+/* ====================== */
+/* 基本スタイル */
+/* ====================== */
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   text-align: center;
@@ -9,6 +9,9 @@ body {
   color: #333;
 }
 
+/* ---------------------- */
+/* ゲーム・ステージ画面共通 */
+/* ---------------------- */
 #stage-select, #game, #result-screen {
   max-width: 700px;
   margin: 0 auto 40px auto;
@@ -18,17 +21,17 @@ body {
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
-/* =========================================================
-   🏷 見出し
-========================================================= */
+/* ====================== */
+/* 見出し */
+/* ====================== */
 h1, h2, h3 {
   margin-bottom: 20px;
   color: #222;
 }
 
-/* =========================================================
-   🔘 ボタン共通スタイル
-========================================================= */
+/* ====================== */
+/* 共通ボタン */
+/* ====================== */
 button {
   margin: 8px 6px;
   padding: 12px 25px;
@@ -49,9 +52,9 @@ button:disabled {
   cursor: default;
 }
 
-/* =========================================================
-   ✏ 入力欄
-========================================================= */
+/* ====================== */
+/* 入力欄 */
+/* ====================== */
 #answer {
   font-size: 18px;
   padding: 10px 12px;
@@ -63,9 +66,9 @@ button:disabled {
   box-sizing: border-box;
 }
 
-/* =========================================================
-   🔄 進捗・問題文
-========================================================= */
+/* ====================== */
+/* 進捗・問題 */
+/* ====================== */
 #progress {
   font-weight: bold;
   font-size: 18px;
@@ -79,9 +82,9 @@ button:disabled {
   color: #111;
 }
 
-/* =========================================================
-   ✅ 正誤表示
-========================================================= */
+/* ====================== */
+/* 正誤表示 */
+/* ====================== */
 #result {
   font-size: 20px;
   margin-bottom: 15px;
@@ -90,9 +93,9 @@ button:disabled {
 .correct { color: #059669; font-weight: bold; }
 .incorrect { color: #dc2626; font-weight: bold; }
 
-/* =========================================================
-   📊 結果画面全体
-========================================================= */
+/* ====================== */
+/* 結果リスト */
+/* ====================== */
 #resultsUl {
   list-style: none;
   padding-left: 0;
@@ -117,9 +120,9 @@ button:disabled {
   color: #dc2626;
 }
 
-/* =========================================================
-   🎚 難易度・モード選択（ラジオボタン）
-========================================================= */
+/* ====================== */
+/* ラジオボタンスタイル */
+/* ====================== */
 .radio-label {
   display: block;
   font-size: 18px;
@@ -146,9 +149,9 @@ button:disabled {
   border-color: #ea580c;
 }
 
-/* =========================================================
-   🧩 単語ブロック入力エリア
-========================================================= */
+/* ====================== */
+/* 単語ブロック（文作り用） */
+/* ====================== */
 #block-input-area {
   margin-top: 20px;
   padding: 16px;
@@ -156,7 +159,6 @@ button:disabled {
   border-radius: 12px;
   box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
-
 #word-blocks {
   display: flex;
   flex-wrap: wrap;
@@ -164,8 +166,6 @@ button:disabled {
   gap: 8px;
   margin-top: 10px;
 }
-
-/* 単語ブロック */
 .word-btn {
   background: #fff;
   border: 1px solid #ddd;
@@ -207,8 +207,6 @@ button:disabled {
   font-weight: 600;
   color: #111;
 }
-
-/* 選択中のブロックボタン */
 .selected-word-btn {
   background: #e0f2fe;
   border: 1px solid #93c5fd;
@@ -234,86 +232,65 @@ button:disabled {
   background: #f9fafb;
   border: 2px solid #e5e7eb;
   border-radius: 12px;
-  padding: 20px 25px;
-  margin: 20px 10px;
+  padding: 18px 22px;
+  margin: 15px 10px;
   text-align: center;
   width: fit-content;
+  min-width: 160px;
   box-shadow: 0 2px 8px rgba(0,0,0,0.1);
   display: inline-block; /* 横並び */
   vertical-align: top;
+  white-space: nowrap; /* 改行防止 */
 }
-
 .time-row {
-  margin: 8px 0;
-  font-size: 1.2rem;
+  margin: 6px 0;
+  font-size: 1.1rem;
+  line-height: 1.3;
 }
-
 .label {
   font-weight: 600;
   color: #374151;
 }
-
 .value {
   font-weight: 700;
   margin-left: 4px;
+  white-space: nowrap; /* 数字や100%の改行防止 */
 }
-
 .value.now {
-  color: #059669; /* グリーン */
+  color: #059669; /* グリーン：今回 */
 }
 .value.prev {
-  color: #2563eb; /* ブルー */
+  color: #2563eb; /* ブルー：前回 */
+}
+
+/* ====================== */
+/* アニメーション */
+/* ====================== */
+@keyframes pulse {
+  0% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.3); opacity: 0.7; }
+  100% { transform: scale(1); opacity: 1; }
 }
 
 /* ====================== */
 /* スマホ対応 */
 /* ====================== */
 @media (max-width: 480px) {
-  /* --- レイアウト全体 --- */
   body { margin: 20px 10px; font-size: 14px; }
-
-  #stage-select, #game, #result-screen {
-    padding: 15px 20px;
-    max-width: 100%;
-  }
-
+  #stage-select, #game, #result-screen { padding: 15px 20px; max-width: 100%; }
   #answer { width: 90%; font-size: 16px; padding: 8px 10px; }
-
-  button {
-    width: 90%;
-    font-size: 16px;
-    padding: 12px 0;
-    margin: 10px auto;
-    display: block;
-  }
-
+  button { width: 90%; font-size: 16px; padding: 12px 0; margin: 10px auto; display: block; }
   #question { font-size: 22px; }
   #progress { font-size: 16px; }
   #result { font-size: 18px; }
   #resultsUl li { font-size: 14px; padding: 10px 12px; }
 
-  /* --- 単語ブロック --- */
-  #word-blocks, #user-block-display {
+  /* 単語ブロックのスマホ調整 */
+  #word-blocks,
+  #user-block-display {
     gap: 6px;
     justify-content: center;
   }
-  .word-btn, .selected-word-btn {
-    font-size: 14px;
-    padding: 6px 10px;
-    min-width: 50px;
-    max-width: 100px;
-  }
-
-  /* --- タイム・正答率カード --- */
-  .time-card {
-    display: block;          /* 横並び → 縦並び */
-    margin: 12px auto;       /* 中央寄せ */
-    padding: 15px 20px;
-    width: 85%;              /* スマホで少し広めに */
-  }
-
-  .time-row {
-    font-size: 0.95rem;      /* 少し小さく */
-  }
-}
-
+  .word-btn,
+  .selected-word-btn {
+    font-size:
