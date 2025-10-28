@@ -220,7 +220,7 @@ button:disabled {
   text-align: center;
 }
 .selected-word-btn:hover {
-  background: #bfdbfe;
+  background: #a9a9a9;
 }
 
 /* ====================== */
@@ -261,3 +261,4 @@ button:disabled {
     flex: 0 0 auto; /* 横並び維持 */
   }
 }
+
