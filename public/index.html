@@ -10,44 +10,41 @@
   <div id="app">
     <h1>Instant English</h1>
 
-    <!-- 難易度・モード選択 -->
+    <!-- 難易度選択 -->
     <div id="stage-select">
       <h2>難易度を選んでください</h2>
       <button class="difficulty-btn" data-difficulty="easy">初級</button>
       <button class="difficulty-btn" data-difficulty="normal">中級</button>
       <button class="difficulty-btn" data-difficulty="hard">上級</button>
+    </div>
 
-      <h3>モード選択</h3>
-      <label>
-        <input type="radio" name="mode" value="input" checked> 通常入力
-      </label>
-      <label>
-        <input type="radio" name="mode" value="block"> 単語ブロック
-      </label>
+    <!-- モード選択 -->
+    <div id="mode-select" style="display:none;">
+      <h2>入力方式を選んでください</h2>
+      <button class="mode-btn" data-mode="text">通常入力</button>
+      <button class="mode-btn" data-mode="block">単語ブロック</button>
     </div>
 
     <!-- ゲーム画面 -->
     <div id="game" style="display: none;">
       <p id="difficulty"></p>
-      <p id="progress"></p>
+      <p id="progress"></p> 
       <p id="question"></p>
 
-      <!-- 通常入力モード -->
-      <div id="input-mode">
+      <!-- 通常入力 -->
+      <div id="text-input-area">
         <input type="text" id="answer" placeholder="英語で入力" />
         <button id="submit-btn">回答</button>
       </div>
 
-      <!-- 単語ブロックモード -->
-      <div id="block-mode" style="display: none;">
-        <div id="word-blocks"></div>
-        <p id="block-input"></p>
-        <br />
+      <!-- 単語ブロック入力 -->
+      <div id="block-input-area" style="display:none;">
+        <div id="user-block-display" class="block-display"></div>
+        <div id="word-blocks" class="word-blocks"></div>
         <button id="block-submit-btn">回答</button>
       </div>
 
       <p id="result"></p>
-      <br />
     </div>
 
     <!-- 結果画面 -->
