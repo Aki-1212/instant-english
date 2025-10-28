@@ -221,7 +221,7 @@ function showResult() {
         </div>
         <div class="time-row">
           <span class="label">前回のタイム：</span>
-          <span class="value prev">${prevTime ? prevTime + ' 秒' : '－－－－－'}</span>
+          <span class="value prev">${prevTime ? prevTime + ' 秒' : '－－－'}</span>
         </div>
       </div>
 
@@ -232,7 +232,7 @@ function showResult() {
         </div>
         <div class="time-row">
           <span class="label">前回の正答率：</span>
-          <span class="value prev">${prevAccuracy ? prevAccuracy + '%' : '－－－－－'}</span>
+          <span class="value prev">${prevAccuracy ? prevAccuracy + '%' : '－－'}</span>
         </div>
       </div>
     </div>
