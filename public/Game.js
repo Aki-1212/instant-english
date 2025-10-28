@@ -4,8 +4,9 @@ let questions = []
 let currentIndex = 0
 let startTime, endTime
 let currentDifficulty = 'easy'
-let inputMode = 'text' // 'text' or 'block'
+let inputMode = 'text'
 let userAnswerWords = []
+let isSubmitting = false // 連打防止フラグ
 
 // 要素取得
 const stageSelect = document.getElementById('stage-select')
@@ -13,32 +14,29 @@ const modeSelect = document.getElementById('mode-select')
 const game = document.getElementById('game')
 const resultScreen = document.getElementById('result-screen')
 
-// ✅ 共通：画面切り替え関数（ちらつき防止）
-function showScreen(target) {
-  [stageSelect, modeSelect, game, resultScreen].forEach(el => (el.style.display = 'none'))
-  target.style.display = 'block'
-}
-
-// --- 難易度選択 ---
+// 難易度選択ボタン
 document.querySelectorAll('.difficulty-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     currentDifficulty = btn.dataset.difficulty
     document.getElementById('difficulty').textContent = `難易度：${btn.textContent}`
-    showScreen(modeSelect)
+    stageSelect.style.display = 'none'
+    modeSelect.style.display = 'block'
   })
 })
 
-// --- モード選択 ---
+// モード選択ボタン
 document.querySelectorAll('.mode-btn').forEach(btn => {
   btn.addEventListener('click', async () => {
     inputMode = btn.dataset.mode
-    showScreen(game)
+    modeSelect.style.display = 'none'
     await loadQuestions(currentDifficulty)
   })
 })
 
-// --- Supabaseから問題取得 ---
+// --- 問題取得 ---
 async function loadQuestions(difficulty) {
+  game.style.display = 'block'
+
   const { data, error } = await supabase
     .from('questions')
     .select('*')
@@ -65,12 +63,13 @@ function showQuestion() {
     return
   }
 
-  // 初期化
+  // リセット
   document.getElementById('result').textContent = ''
   document.getElementById('answer').value = ''
   document.getElementById('user-block-display').textContent = ''
   document.getElementById('word-blocks').innerHTML = ''
   userAnswerWords = []
+  isSubmitting = false // 回答再開時に解除
 
   const q = questions[currentIndex]
   document.getElementById('question').textContent = q.question_jp
@@ -79,6 +78,12 @@ function showQuestion() {
   if (inputMode === 'text') {
     document.getElementById('text-input-area').style.display = 'block'
     document.getElementById('block-input-area').style.display = 'none'
+
+    // ✅ カーソルを自動でフォーカス
+    setTimeout(() => {
+      document.getElementById('answer').focus()
+    }, 100)
+
   } else {
     document.getElementById('text-input-area').style.display = 'none'
     document.getElementById('block-input-area').style.display = 'block'
@@ -122,17 +127,50 @@ function shuffle(array) {
   return array
 }
 
-// --- 回答判定（通常入力） ---
+// --- 回答判定 ---
+// テキスト入力
 document.getElementById('submit-btn').addEventListener('click', () => {
+  if (isSubmitting) return
+  isSubmitting = true
+
+  const btn = document.getElementById('submit-btn')
+  btn.disabled = true
+
   const userAnswer = document.getElementById('answer').value.trim()
   checkAnswer(userAnswer)
+
+  // 1秒後にボタン再有効化
+  setTimeout(() => {
+    btn.disabled = false
+    isSubmitting = false
+  }, 1200)
 })
 
-// --- 回答判定（ブロック入力） ---
+// ✅ Enterキーで回答
+document.getElementById('answer').addEventListener('keydown', e => {
+  if (e.key === 'Enter') {
+    e.preventDefault()
+    document.getElementById('submit-btn').click()
+  }
+})
+
+// --- 単語ブロック回答 ---
 document.getElementById('block-submit-btn').addEventListener('click', () => {
+  if (isSubmitting) return
+  isSubmitting = true
+
+  const btn = document.getElementById('block-submit-btn')
+  btn.disabled = true
+
   checkAnswer(userAnswerWords.join(' '))
+
+  setTimeout(() => {
+    btn.disabled = false
+    isSubmitting = false
+  }, 1200)
 })
 
+// --- 答えチェック ---
 function checkAnswer(userAnswer) {
   const correctAnswer = questions[currentIndex].answer_en.trim()
   const normalize = str => str.toLowerCase().replace(/[.,!?]/g, '').trim()
@@ -149,8 +187,11 @@ function checkAnswer(userAnswer) {
 
   const resultEl = document.getElementById('result')
   resultEl.textContent = resultText
-  resultEl.style.color = !userAnswer ? '#dc2626' : isCorrect ? '#059669' : '#dc2626'
+  resultEl.style.color = !userAnswer ? '#dc2626'
+    : isCorrect ? '#059669'
+    : '#dc2626'
 
+  // 履歴記録
   window.answerHistory.push({
     question: questions[currentIndex].question_jp,
     userAnswer: userAnswer || '未記入',
@@ -166,7 +207,8 @@ function checkAnswer(userAnswer) {
 function showResult() {
   endTime = new Date()
   const timeSec = ((endTime - startTime) / 1000).toFixed(2)
-  showScreen(resultScreen)
+  game.style.display = 'none'
+  resultScreen.style.display = 'block'
 
   document.getElementById('summary').innerHTML = `
     全${questions.length}問完了！<br>
@@ -183,13 +225,19 @@ function showResult() {
   })
 }
 
-// --- 戻るボタン（ゲーム画面・結果画面共通） ---
+// --- 戻るボタン ---
 document.getElementById('back-to-stage-btn2').addEventListener('click', () => {
+  game.style.display = 'none'
+  modeSelect.style.display = 'none'
+  resultScreen.style.display = 'none'
+  stageSelect.style.display = 'block'
   window.answerHistory = []
-  showScreen(stageSelect)
 })
 
 document.getElementById('back-to-stage-btn-result').addEventListener('click', () => {
+  game.style.display = 'none'
+  modeSelect.style.display = 'none'
+  resultScreen.style.display = 'none'
+  stageSelect.style.display = 'block'
   window.answerHistory = []
-  showScreen(stageSelect)
 })
