@@ -5,7 +5,7 @@ let currentIndex = 0
 let startTime, endTime
 let currentDifficulty = 'easy'
 let inputMode = 'text'
-let userAnswerWords = [] // { word, btn, removed }
+let userAnswerWords = [] // { word, btn, selected }
 let isSubmitting = false
 
 // 要素取得
@@ -82,7 +82,6 @@ function showQuestion() {
 
 // --- ブロック生成 ---
 function setupWordBlocks(answer) {
-  userAnswerWords = []
   const display = document.getElementById('user-block-display')
   const blocks = document.getElementById('word-blocks')
   display.textContent = ''
@@ -95,45 +94,37 @@ function setupWordBlocks(answer) {
     const btn = document.createElement('button')
     btn.textContent = word
     btn.className = 'word-btn'
+    btn.dataset.selected = 'false'
     btn.addEventListener('click', () => toggleWord(word, btn))
     blocks.appendChild(btn)
   })
 }
 
-// --- ブロック押下で追加・削除を切り替え ---
+// --- ブロック押下でテキスト文更新 ---
 function toggleWord(word, btn) {
-  const existing = userAnswerWords.find(item => item.word === word && !item.removed)
-  if (existing) {
-    // すでに選ばれていた → 取り消す
-    existing.removed = true
-    btn.disabled = false
+  const isSelected = btn.dataset.selected === 'true'
+
+  if (isSelected) {
+    // 選択解除
+    btn.dataset.selected = 'false'
+    btn.style.backgroundColor = ''
+    btn.style.color = ''
+    userAnswerWords = userAnswerWords.filter(w => w !== word)
   } else {
-    // 新しく追加
-    userAnswerWords.push({ word, btn, removed: false })
-    btn.disabled = true
+    // 選択追加
+    btn.dataset.selected = 'true'
+    btn.style.backgroundColor = '#f97316'
+    btn.style.color = 'white'
+    userAnswerWords.push(word)
   }
+
   updateBlockDisplay()
 }
 
-// --- 上部の文エリア更新 ---
+// --- テキスト文を更新して上に表示 ---
 function updateBlockDisplay() {
   const display = document.getElementById('user-block-display')
-  display.innerHTML = ''
-
-  // removed=false のみを順番に表示
-  userAnswerWords.forEach((item, index) => {
-    if (item.removed) return
-
-    const selectedBtn = document.createElement('button')
-    selectedBtn.textContent = item.word
-    selectedBtn.className = 'selected-word-btn'
-    selectedBtn.addEventListener('click', () => {
-      item.removed = true
-      item.btn.disabled = false
-      updateBlockDisplay()
-    })
-    display.appendChild(selectedBtn)
-  })
+  display.textContent = userAnswerWords.join(' ')
 }
 
 // --- シャッフル ---
@@ -162,7 +153,7 @@ function handleSubmit() {
   const userAnswer =
     inputMode === 'text'
       ? document.getElementById('answer').value.trim()
-      : userAnswerWords.filter(w => !w.removed).map(w => w.word).join(' ')
+      : userAnswerWords.join(' ')
 
   checkAnswer(userAnswer)
   setTimeout(() => (isSubmitting = false), 500)
