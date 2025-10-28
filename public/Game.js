@@ -194,24 +194,46 @@ function showResult() {
   game.style.display = 'none'
   resultScreen.style.display = 'block'
 
-  // --- 難易度ごとの前回タイム取得 ---
-  const prevTimeKey = `prevTime_${currentDifficulty}`
-  const prevTime = localStorage.getItem(prevTimeKey)
+  // --- 難易度ごとのキー ---
+  const timeKey = `prevTime_${currentDifficulty}`
+  const accuracyKey = `prevAccuracy_${currentDifficulty}`
 
-  // --- 今回のタイムを保存 ---
-  localStorage.setItem(prevTimeKey, timeSec)
+  // --- 前回データ取得 ---
+  const prevTime = localStorage.getItem(timeKey)
+  const prevAccuracy = localStorage.getItem(accuracyKey)
 
-  // --- 結果表示 ---
+  // --- 正答率計算 ---
+  const correctCount = window.answerHistory.filter(a => a.isCorrect).length
+  const accuracy = ((correctCount / questions.length) * 100).toFixed(1)
+
+  // --- 今回データ保存 ---
+  localStorage.setItem(timeKey, timeSec)
+  localStorage.setItem(accuracyKey, accuracy)
+
+  // --- 表示エリア ---
   const summaryEl = document.getElementById('summary')
   summaryEl.innerHTML = `
-    <div class="time-card">
-      <div class="time-row">
-        <span class="label">今回のタイム：</span>
-        <span class="value now">${timeSec} 秒</span>
+    <div class="result-container">
+      <div class="time-card">
+        <div class="time-row">
+          <span class="label">今回のタイム：</span>
+          <span class="value now">${timeSec} 秒</span>
+        </div>
+        <div class="time-row">
+          <span class="label">前回のタイム：</span>
+          <span class="value prev">${prevTime ? prevTime + ' 秒' : '－－－－－'}</span>
+        </div>
       </div>
-      <div class="time-row">
-        <span class="label">前回のタイム：</span>
-        <span class="value prev">${prevTime ? prevTime + ' 秒' : '－－－－－'}</span>
+
+      <div class="time-card">
+        <div class="time-row">
+          <span class="label">今回の正答率：</span>
+          <span class="value now">${accuracy}%</span>
+        </div>
+        <div class="time-row">
+          <span class="label">前回の正答率：</span>
+          <span class="value prev">${prevAccuracy ? prevAccuracy + '%' : '－－－－－'}</span>
+        </div>
       </div>
     </div>
   `
