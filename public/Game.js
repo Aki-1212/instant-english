@@ -4,7 +4,7 @@ let questions = []
 let currentIndex = 0
 let startTime, endTime
 let currentDifficulty = 'easy'
-let inputMode = 'text' // text or block
+let inputMode = 'text' // 'text' or 'block'
 let userAnswerWords = []
 
 // 要素取得
@@ -32,7 +32,7 @@ document.querySelectorAll('.mode-btn').forEach(btn => {
   })
 })
 
-// 問題をSupabaseから取得
+// Supabaseから問題取得
 async function loadQuestions(difficulty) {
   game.style.display = 'block'
 
@@ -51,26 +51,32 @@ async function loadQuestions(difficulty) {
   questions = data
   currentIndex = 0
   startTime = new Date()
+  window.answerHistory = []
   showQuestion()
 }
 
-// 問題を表示
+// 問題表示
 function showQuestion() {
   if (currentIndex >= questions.length) {
     showResult()
     return
   }
 
+  // 前回の結果や入力内容を完全初期化
+  document.getElementById('result').textContent = ''
+  document.getElementById('answer').value = ''
+  document.getElementById('user-block-display').textContent = ''
+  document.getElementById('word-blocks').innerHTML = ''
+  userAnswerWords = []
+
   const q = questions[currentIndex]
   document.getElementById('question').textContent = q.question_jp
-  document.getElementById('result').textContent = ''
   document.getElementById('progress').textContent = `問題 ${currentIndex + 1} / ${questions.length}`
 
   if (inputMode === 'text') {
     document.getElementById('text-input-area').style.display = 'block'
     document.getElementById('block-input-area').style.display = 'none'
-    document.getElementById('answer').value = ''
-  } else if (inputMode === 'block') {
+  } else {
     document.getElementById('text-input-area').style.display = 'none'
     document.getElementById('block-input-area').style.display = 'block'
     setupWordBlocks(q.answer_en)
@@ -86,7 +92,7 @@ function setupWordBlocks(answer) {
   blocks.innerHTML = ''
 
   const words = answer.split(' ')
-  const shuffled = shuffle([...words]) // 配列シャッフル
+  const shuffled = shuffle([...words])
   shuffled.forEach(word => {
     const btn = document.createElement('button')
     btn.textContent = word
@@ -104,7 +110,7 @@ function updateBlockDisplay() {
   document.getElementById('user-block-display').textContent = userAnswerWords.join(' ')
 }
 
-// シャッフル関数
+// 配列シャッフル
 function shuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
@@ -128,29 +134,35 @@ document.getElementById('block-submit-btn').addEventListener('click', () => {
 
 function checkAnswer(userAnswer) {
   const correctAnswer = questions[currentIndex].answer_en.trim()
-  const normalize = (str) => str.toLowerCase().replace(/[.,!?]/g, '').trim()
+  const normalize = str => str.toLowerCase().replace(/[.,!?]/g, '').trim()
+  const isCorrect = normalize(userAnswer) === normalize(correctAnswer)
   let resultText
+
   if (!userAnswer) {
     resultText = `⚠ 未記入 正しい答え: ${correctAnswer}`
-  } else if (normalize(userAnswer) === normalize(correctAnswer)) {
+  } else if (isCorrect) {
     resultText = '✅ 正解！'
   } else {
     resultText = `❌ 不正解 正しい答え: ${correctAnswer}`
   }
 
-  document.getElementById('result').textContent = resultText
+  // 結果表示と色
+  const resultEl = document.getElementById('result')
+  resultEl.textContent = resultText
+  resultEl.style.color = !userAnswer ? '#f59e0b' // 未記入オレンジ
+                      : isCorrect ? '#059669' // 緑
+                      : '#dc2626' // 赤
 
-  // 履歴に追加
-  if (!window.answerHistory) window.answerHistory = []
+  // 履歴追加
   window.answerHistory.push({
     question: questions[currentIndex].question_jp,
     userAnswer: userAnswer || '未記入',
     correctAnswer: correctAnswer,
-    isCorrect: normalize(userAnswer) === normalize(correctAnswer)
+    isCorrect
   })
 
   currentIndex++
-  setTimeout(showQuestion, 1500)
+  setTimeout(showQuestion, 1000)
 }
 
 // 結果表示
@@ -180,4 +192,10 @@ document.getElementById('restart-btn').addEventListener('click', () => {
   resultScreen.style.display = 'none'
   stageSelect.style.display = 'block'
   window.answerHistory = []
+  document.getElementById('question').textContent = ''
+  document.getElementById('progress').textContent = ''
+  document.getElementById('result').textContent = ''
+  document.getElementById('answer').value = ''
+  document.getElementById('user-block-display').textContent = ''
+  document.getElementById('word-blocks').innerHTML = ''
 })
