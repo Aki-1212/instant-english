@@ -104,38 +104,35 @@ button:disabled {
 }
 
 /* 🔸難易度・モード選択カード */
-#difficulty-options, #mode-options {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 16px;
-  margin: 20px 0;
+.radio-label {
+  display: block;
+  font-size: 18px;
+  padding: 12px 15px;
+  margin: 8px 0;
+  border: 2px solid #f97316;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  background: #fff;
+  text-align: left;
 }
 
-.option-card {
-  flex: 1 1 40%;
-  min-width: 140px;
-  max-width: 200px;
-  background: #fff;
-  border: 2px solid #f97316;
-  border-radius: 12px;
-  padding: 15px 10px;
-  box-shadow: 0 3px 6px rgba(0,0,0,0.1);
-  cursor: pointer;
-  transition: all 0.3s ease;
-  font-weight: 600;
-  color: #f97316;
+.radio-label input[type="radio"] {
+  margin-right: 12px;
+  transform: scale(1.3);
 }
-.option-card:hover {
+
+.radio-label:hover {
   background: #fef3c7;
-  transform: translateY(-2px);
 }
-.option-card.selected {
+
+.radio-label input[type="radio"]:checked + *,
+.radio-label input[type="radio"]:checked {
   background: #f97316;
   color: #fff;
   border-color: #ea580c;
-  transform: scale(1.05);
 }
+
 
 /* 単語ブロック */
 #block-input-area {
@@ -223,3 +220,4 @@ button:disabled {
   #difficulty-options, #mode-options { flex-direction: column; align-items: center; }
   .option-card { width: 80%; }
 }
+
