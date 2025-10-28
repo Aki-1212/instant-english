@@ -3,40 +3,66 @@ import { supabase } from './lib/supabaseClient.js'
 let questions = []
 let currentIndex = 0
 let startTime, endTime
-let currentDifficulty = 'easy'
 let inputMode = 'text'
-let userAnswerWords = [] // { word, btn, selected }
+let userAnswerWords = []
 let isSubmitting = false
 
-// 要素取得
 const stageSelect = document.getElementById('stage-select')
 const game = document.getElementById('game')
 const resultScreen = document.getElementById('result-screen')
 
-// --- 難易度ボタンで即ゲーム開始 ---
-document.querySelectorAll('.difficulty-btn').forEach(btn => {
-  btn.addEventListener('click', async () => {
-    const selectedMode = document.querySelector('input[name="mode"]:checked').value
-    currentDifficulty = btn.dataset.difficulty
-    inputMode = selectedMode
+const categorySelect = document.getElementById('category-select')
+const subCategorySelect = document.getElementById('sub-category-select')
+const levelSelect = document.getElementById('level-select')
+const startBtn = document.getElementById('start-btn')
 
-    document.getElementById('difficulty').textContent =
-      `難易度：${currentDifficulty === 'easy' ? '初級' : currentDifficulty === 'normal' ? '中級' : '上級'}`
+// --- サブカテゴリ定義 ---
+const subCategories = {
+  "現在形": ["現在形", "現在進行形", "現在完了形", "現在完了進行形"],
+  "過去時制": ["過去形", "過去進行形", "過去完了形", "過去完了進行形"],
+  "未来時制": ["未来形", "未来進行形", "未来完了形", "未来完了進行形"],
+  "日常会話編": ["日常会話編"],
+  "旅行編": ["旅行編"],
+  "お店編": ["お店編"]
+}
 
-    stageSelect.style.display = 'none'
-    await loadQuestions(currentDifficulty)
+// --- サブカテゴリ更新 ---
+function updateSubCategories() {
+  const cat = categorySelect.value
+  subCategorySelect.innerHTML = ''
+  subCategories[cat].forEach(sub => {
+    const opt = document.createElement('option')
+    opt.value = sub
+    opt.textContent = sub
+    subCategorySelect.appendChild(opt)
   })
+}
+categorySelect.addEventListener('change', updateSubCategories)
+updateSubCategories()
+
+// --- ゲーム開始 ---
+startBtn.addEventListener('click', async () => {
+  const category = categorySelect.value
+  const subCategory = subCategorySelect.value
+  const level = levelSelect.value
+  inputMode = document.querySelector('input[name="mode"]:checked').value
+
+  document.getElementById('difficulty').textContent = `カテゴリー: ${category} / ${subCategory} レベル: ${level}`
+
+  stageSelect.style.display = 'none'
+  await loadQuestions(category, subCategory, level)
 })
 
 // --- 問題取得 ---
-async function loadQuestions(difficulty) {
+async function loadQuestions(category, subCategory, level) {
   game.style.display = 'block'
 
   const { data, error } = await supabase
     .from('questions')
     .select('*')
-    .eq('difficulty', difficulty)
-    .order('id', { ascending: true })
+    .eq('category', category)
+    .eq('sub_category', subCategory)
+    .eq('level', level)
 
   if (error) {
     console.error('問題取得エラー:', error)
@@ -44,7 +70,8 @@ async function loadQuestions(difficulty) {
     return
   }
 
-  questions = data
+  // 30問プールからランダム10問を抽出
+  questions = shuffle(data).slice(0, 10)
   currentIndex = 0
   startTime = new Date()
   window.answerHistory = []
@@ -80,7 +107,7 @@ function showQuestion() {
   }
 }
 
-// --- ブロック生成 ---
+// --- 単語ブロック生成 ---
 function setupWordBlocks(answer) {
   const display = document.getElementById('user-block-display')
   const blocks = document.getElementById('word-blocks')
@@ -100,18 +127,16 @@ function setupWordBlocks(answer) {
   })
 }
 
-// --- ブロック押下でテキスト文更新 ---
+// --- 単語ブロッククリック処理 ---
 function toggleWord(word, btn) {
   const isSelected = btn.dataset.selected === 'true'
 
   if (isSelected) {
-    // 選択解除
     btn.dataset.selected = 'false'
     btn.style.backgroundColor = ''
     btn.style.color = ''
     userAnswerWords = userAnswerWords.filter(w => w !== word)
   } else {
-    // 選択追加
     btn.dataset.selected = 'true'
     btn.style.backgroundColor = '#a9a9a9'
     btn.style.color = 'white'
@@ -121,13 +146,13 @@ function toggleWord(word, btn) {
   updateBlockDisplay()
 }
 
-// --- テキスト文を更新して上に表示 ---
+// --- 単語ブロック表示更新 ---
 function updateBlockDisplay() {
   const display = document.getElementById('user-block-display')
   display.textContent = userAnswerWords.join(' ')
 }
 
-// --- シャッフル ---
+// --- 配列シャッフル ---
 function shuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
@@ -136,7 +161,7 @@ function shuffle(array) {
   return array
 }
 
-// --- 回答チェック ---
+// --- 回答送信 ---
 document.getElementById('submit-btn').addEventListener('click', handleSubmit)
 document.getElementById('block-submit-btn').addEventListener('click', handleSubmit)
 document.getElementById('answer').addEventListener('keydown', e => {
@@ -188,29 +213,16 @@ function checkAnswer(userAnswer) {
   setTimeout(showQuestion, 1000)
 }
 
+// --- 結果表示 ---
 function showResult() {
   endTime = new Date()
   const timeSec = ((endTime - startTime) / 1000).toFixed(2)
   game.style.display = 'none'
   resultScreen.style.display = 'block'
 
-  // --- 難易度ごとのキー ---
-  const timeKey = `prevTime_${currentDifficulty}`
-  const accuracyKey = `prevAccuracy_${currentDifficulty}`
-
-  // --- 前回データ取得 ---
-  const prevTime = localStorage.getItem(timeKey)
-  const prevAccuracy = localStorage.getItem(accuracyKey)
-
-  // --- 正答率計算 ---
   const correctCount = window.answerHistory.filter(a => a.isCorrect).length
   const accuracy = ((correctCount / questions.length) * 100).toFixed(1)
 
-  // --- 今回データ保存 ---
-  localStorage.setItem(timeKey, timeSec)
-  localStorage.setItem(accuracyKey, accuracy)
-
-  // --- 表示エリア ---
   const summaryEl = document.getElementById('summary')
   summaryEl.innerHTML = `
     <div class="result-container">
@@ -219,26 +231,16 @@ function showResult() {
           <span class="label">今回のタイム：</span>
           <span class="value now">${timeSec} 秒</span>
         </div>
-        <div class="time-row">
-          <span class="label">前回のタイム：</span>
-          <span class="value prev">${prevTime ? prevTime + ' 秒' : '－－－'}</span>
-        </div>
       </div>
-
       <div class="time-card">
         <div class="time-row">
           <span class="label">今回の正答率：</span>
           <span class="value now">${accuracy}%</span>
         </div>
-        <div class="time-row">
-          <span class="label">前回の正答率：</span>
-          <span class="value prev">${prevAccuracy ? prevAccuracy + '%' : '－－'}</span>
-        </div>
       </div>
     </div>
   `
 
-  // --- 結果一覧 ---
   const ul = document.getElementById('resultsUl')
   ul.innerHTML = ''
   window.answerHistory.forEach(item => {
@@ -248,7 +250,6 @@ function showResult() {
     ul.appendChild(li)
   })
 }
-
 
 // --- 戻るボタン ---
 document.getElementById('back-to-stage-btn2').addEventListener('click', resetToStage)
