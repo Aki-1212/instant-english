@@ -133,6 +133,64 @@ button:hover {
   word-wrap: break-word;
 }
 
+#block-input-area {
+  margin-top: 20px;
+  padding: 16px;
+  background: #f9f9f9;
+  border-radius: 12px;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+}
+
+#word-blocks {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.word-btn {
+  background: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 6px 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 14px;
+}
+
+.word-btn:hover {
+  background: #f1f1f1;
+}
+
+#user-block-display {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  justify-content: center;
+  background: #fff;
+  border: 1px dashed #ccc;
+  border-radius: 10px;
+  padding: 8px;
+  min-height: 40px;
+  margin-bottom: 12px;
+}
+
+.selected-word-btn {
+  background: #e0f2fe;
+  border: 1px solid #93c5fd;
+  border-radius: 8px;
+  padding: 6px 10px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.2s;
+}
+
+.selected-word-btn:hover {
+  background: #bfdbfe;
+}
+
+
 
 /* アニメーション */
 @keyframes pulse {
@@ -154,4 +212,5 @@ button:hover {
   .speak-small-btn { font-size: 16px; margin-left: 4px; }
   #speakBtn { font-size: 20px; }
 }
+
 
