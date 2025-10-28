@@ -14,7 +14,7 @@ const modeSelect = document.getElementById('mode-select')
 const game = document.getElementById('game')
 const resultScreen = document.getElementById('result-screen')
 
-// 難易度選択ボタン
+// 難易度選択
 document.querySelectorAll('.difficulty-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     currentDifficulty = btn.dataset.difficulty
@@ -24,7 +24,7 @@ document.querySelectorAll('.difficulty-btn').forEach(btn => {
   })
 })
 
-// モード選択ボタン
+// モード選択
 document.querySelectorAll('.mode-btn').forEach(btn => {
   btn.addEventListener('click', async () => {
     inputMode = btn.dataset.mode
@@ -63,13 +63,12 @@ function showQuestion() {
     return
   }
 
-  // リセット
   document.getElementById('result').textContent = ''
   document.getElementById('answer').value = ''
   document.getElementById('user-block-display').textContent = ''
   document.getElementById('word-blocks').innerHTML = ''
   userAnswerWords = []
-  isSubmitting = false // 回答再開時に解除
+  isSubmitting = false
 
   const q = questions[currentIndex]
   document.getElementById('question').textContent = q.question_jp
@@ -78,12 +77,7 @@ function showQuestion() {
   if (inputMode === 'text') {
     document.getElementById('text-input-area').style.display = 'block'
     document.getElementById('block-input-area').style.display = 'none'
-
-    // ✅ カーソルを自動でフォーカス
-    setTimeout(() => {
-      document.getElementById('answer').focus()
-    }, 100)
-
+    setTimeout(() => document.getElementById('answer').focus(), 100)
   } else {
     document.getElementById('text-input-area').style.display = 'none'
     document.getElementById('block-input-area').style.display = 'block'
@@ -101,21 +95,40 @@ function setupWordBlocks(answer) {
 
   const words = answer.split(' ')
   const shuffled = shuffle([...words])
+
   shuffled.forEach(word => {
     const btn = document.createElement('button')
     btn.textContent = word
     btn.className = 'word-btn'
-    btn.addEventListener('click', () => {
-      userAnswerWords.push(word)
-      updateBlockDisplay()
-      btn.disabled = true
-    })
+    btn.addEventListener('click', () => selectWord(word, btn))
     blocks.appendChild(btn)
   })
+  updateBlockDisplay()
+}
+
+// --- ブロック選択と解除機能 ---
+function selectWord(word, btn) {
+  userAnswerWords.push({ word, btn })
+  btn.disabled = true
+  updateBlockDisplay()
 }
 
 function updateBlockDisplay() {
-  document.getElementById('user-block-display').textContent = userAnswerWords.join(' ')
+  const display = document.getElementById('user-block-display')
+  display.innerHTML = ''
+
+  userAnswerWords.forEach((item, index) => {
+    const selectedBtn = document.createElement('button')
+    selectedBtn.textContent = item.word
+    selectedBtn.className = 'selected-word-btn'
+    selectedBtn.addEventListener('click', () => {
+      // クリックで元に戻す
+      item.btn.disabled = false
+      userAnswerWords.splice(index, 1)
+      updateBlockDisplay()
+    })
+    display.appendChild(selectedBtn)
+  })
 }
 
 // --- 配列シャッフル ---
@@ -132,21 +145,19 @@ function shuffle(array) {
 document.getElementById('submit-btn').addEventListener('click', () => {
   if (isSubmitting) return
   isSubmitting = true
-
   const btn = document.getElementById('submit-btn')
   btn.disabled = true
 
   const userAnswer = document.getElementById('answer').value.trim()
   checkAnswer(userAnswer)
 
-  // 1秒後にボタン再有効化
   setTimeout(() => {
     btn.disabled = false
     isSubmitting = false
   }, 1200)
 })
 
-// ✅ Enterキーで回答
+// Enterキーで回答
 document.getElementById('answer').addEventListener('keydown', e => {
   if (e.key === 'Enter') {
     e.preventDefault()
@@ -154,23 +165,20 @@ document.getElementById('answer').addEventListener('keydown', e => {
   }
 })
 
-// --- 単語ブロック回答 ---
+// ブロック回答
 document.getElementById('block-submit-btn').addEventListener('click', () => {
   if (isSubmitting) return
   isSubmitting = true
-
   const btn = document.getElementById('block-submit-btn')
   btn.disabled = true
-
-  checkAnswer(userAnswerWords.join(' '))
-
+  checkAnswer(userAnswerWords.map(w => w.word).join(' '))
   setTimeout(() => {
     btn.disabled = false
     isSubmitting = false
   }, 1200)
 })
 
-// --- 答えチェック ---
+// --- 答え判定 ---
 function checkAnswer(userAnswer) {
   const correctAnswer = questions[currentIndex].answer_en.trim()
   const normalize = str => str.toLowerCase().replace(/[.,!?]/g, '').trim()
@@ -187,11 +195,8 @@ function checkAnswer(userAnswer) {
 
   const resultEl = document.getElementById('result')
   resultEl.textContent = resultText
-  resultEl.style.color = !userAnswer ? '#dc2626'
-    : isCorrect ? '#059669'
-    : '#dc2626'
+  resultEl.style.color = !userAnswer ? '#dc2626' : isCorrect ? '#059669' : '#dc2626'
 
-  // 履歴記録
   window.answerHistory.push({
     question: questions[currentIndex].question_jp,
     userAnswer: userAnswer || '未記入',
