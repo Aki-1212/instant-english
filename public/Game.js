@@ -57,7 +57,7 @@ function showQuestion() {
   // 全問数と残り問数を表示
   const total = questions.length
   const remaining = total - currentIndex
-  document.getElementById('progress').textContent = `問題 ${currentIndex + 1} / ${total}（残り ${remaining - 1} 問）`
+  document.getElementById('progress').textContent = `問題 ${currentIndex + 1} / ${total}`
 
 
 }
