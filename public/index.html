@@ -34,15 +34,18 @@
       <!-- 通常入力 -->
       <div id="text-input-area">
         <input type="text" id="answer" placeholder="英語で入力" />
+        <br />
         <button id="submit-btn">回答</button>
       </div>
 
       <!-- 単語ブロック入力 -->
-      <div id="block-input-area" style="display:none;">
-        <div id="user-block-display" class="block-display"></div>
-        <div id="word-blocks" class="word-blocks"></div>
-        <button id="block-submit-btn">回答</button>
-      </div>
+    <div id="block-input-area" style="display:none;">
+      <p id="user-block-display"></p>
+      <div id="word-blocks"></div>
+      <br />
+      <button id="block-submit-btn">回答</button>
+    </div>
+
 
       <p id="result"></p>
     </div>
@@ -59,3 +62,4 @@
   <script type="module" src="./Game.js"></script>
 </body>
 </html>
+
