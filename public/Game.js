@@ -5,11 +5,14 @@ let currentIndex = 0
 let startTime, endTime
 let currentDifficulty = 'easy'
 
+// 回答履歴
+let answerHistory = []
+
 // 要素取得
 const stageSelect = document.getElementById('stage-select')
 const game = document.getElementById('game')
 const resultScreen = document.getElementById('result-screen')
-const answersUl = document.getElementById('answersUl')
+const summaryEl = document.getElementById('summary')
 
 // 難易度選択ボタン
 document.querySelectorAll('.difficulty-btn').forEach(btn => {
@@ -24,8 +27,8 @@ document.querySelectorAll('.difficulty-btn').forEach(btn => {
 async function loadQuestions(difficulty) {
   stageSelect.style.display = 'none'
   game.style.display = 'block'
-  answersUl.innerHTML = '' // 前の回答履歴クリア
 
+  answerHistory = [] // 前回の履歴をクリア
   const { data, error } = await supabase
     .from('questions')
     .select('*')
@@ -54,7 +57,8 @@ function showQuestion() {
   const q = questions[currentIndex]
   document.getElementById('question').textContent = q.question_jp
   document.getElementById('answer').value = ''
-  document.getElementById('result').textContent = ''
+  const resultEl = document.getElementById('result')
+  resultEl.textContent = ''
 
   // 全問数と残り問数を表示
   const total = questions.length
@@ -69,19 +73,20 @@ document.getElementById('submit-btn').addEventListener('click', () => {
   const normalize = (str) => str.toLowerCase().replace(/[.,!?]/g, '').trim()
   const isCorrect = normalize(userAnswer) === normalize(correctAnswer)
 
-  // 正誤表示
+  // 正誤表示（ゲーム中のみ）
   const resultEl = document.getElementById('result')
   resultEl.textContent = isCorrect
-    ? '〇 '
-    : `❌ `
-
+    ? '✅ 正解！'
+    : `❌ 不正解\n正しい答え: ${correctAnswer}`
   resultEl.className = isCorrect ? 'correct' : 'incorrect'
 
-  // 回答履歴に追加
-  const li = document.createElement('li')
-  li.textContent = `Q: ${questions[currentIndex].question_jp} → A: ${correctAnswer} (${isCorrect ? '〇' : '×'})`
-  li.className = isCorrect ? 'correct' : 'incorrect'
-  answersUl.appendChild(li)
+  // 履歴に追加（結果画面用）
+  answerHistory.push({
+    question: questions[currentIndex].question_jp,
+    userAnswer,
+    correctAnswer,
+    isCorrect
+  })
 
   currentIndex++
   setTimeout(showQuestion, 1500)
@@ -93,9 +98,23 @@ function showResult() {
   const timeSec = ((endTime - startTime) / 1000).toFixed(2)
   game.style.display = 'none'
   resultScreen.style.display = 'block'
-  document.getElementById('summary').innerHTML = `
+
+  // 結果画面に全履歴表示
+  let historyHtml = '<ul>'
+  answerHistory.forEach((a, i) => {
+    historyHtml += `<li class="${a.isCorrect ? 'correct' : 'incorrect'}">
+      Q${i + 1}: ${a.question} <br>
+      あなたの答え: ${a.userAnswer} <br>
+      正解: ${a.correctAnswer} (${a.isCorrect ? '〇' : '×'})
+    </li>`
+  })
+  historyHtml += '</ul>'
+
+  summaryEl.innerHTML = `
     全${questions.length}問完了！<br>
     経過時間：${timeSec} 秒
+    <h3>回答履歴</h3>
+    ${historyHtml}
   `
 }
 
