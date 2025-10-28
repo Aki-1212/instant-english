@@ -113,7 +113,7 @@ function toggleWord(word, btn) {
   } else {
     // 選択追加
     btn.dataset.selected = 'true'
-    btn.style.backgroundColor = '#f97316'
+    btn.style.backgroundColor = '#a9a9a9'
     btn.style.color = 'white'
     userAnswerWords.push(word)
   }
