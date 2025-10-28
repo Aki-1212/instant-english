@@ -10,8 +10,28 @@
   <div id="app">
     <h1>Instant English</h1>
 
-    <!-- 難易度＆モード選択 -->
+    <!-- カテゴリ・サブカテゴリ・レベル選択 -->
     <div id="stage-select">
+      <h2>カテゴリを選んでください</h2>
+      <select id="category-select">
+        <option value="現在形">現在形</option>
+        <option value="過去時制">過去時制</option>
+        <option value="未来時制">未来時制</option>
+        <option value="日常会話編">日常会話編</option>
+        <option value="旅行編">旅行編</option>
+        <option value="お店編">お店編</option>
+      </select>
+
+      <h2>サブカテゴリを選んでください</h2>
+      <select id="sub-category-select"></select>
+
+      <h2>レベルを選んでください</h2>
+      <select id="level-select">
+        <option value="1">レベル1</option>
+        <option value="2">レベル2</option>
+        <option value="3">レベル3</option>
+      </select>
+
       <h2>回答方式を選んでください</h2>
       <div class="mode-area">
         <label class="radio-label">
@@ -23,16 +43,9 @@
           ブロック方式
         </label>
       </div>
-    
-      <h2>難易度を選んでください</h2>
-      <div class="difficulty-area">
-        <button class="difficulty-btn" data-difficulty="easy">初級</button>
-        <button class="difficulty-btn" data-difficulty="normal">中級</button>
-        <button class="difficulty-btn" data-difficulty="hard">上級</button>
-      </div>
-    </div>
-</div>
 
+      <button id="start-btn">ゲーム開始</button>
+    </div>
 
     <!-- ゲーム画面 -->
     <div id="game" style="display: none;">
@@ -40,14 +53,12 @@
       <p id="progress"></p> 
       <p id="question"></p>
 
-      <!-- 通常入力 -->
       <div id="text-input-area">
         <input type="text" id="answer" placeholder="英語で入力" />
         <br />
         <button id="submit-btn">答える</button>
       </div>
 
-      <!-- 単語ブロック入力 -->
       <div id="block-input-area" style="display:none;">
         <div id="user-block-display" class="block-display"></div>
         <div id="word-blocks" class="word-blocks"></div>
@@ -69,18 +80,5 @@
   </div>
 
   <script type="module" src="./Game.js"></script>
-  <script>
-    // ラジオカード選択時にselectedクラス付与
-    document.querySelectorAll('.option-card input[type="radio"]').forEach(radio => {
-      radio.addEventListener('change', () => {
-        const group = radio.closest('.option-group') || radio.closest('#difficulty-options') || radio.closest('#mode-options');
-        group.querySelectorAll('.option-card').forEach(card => card.classList.remove('selected'));
-        radio.closest('.option-card').classList.add('selected');
-      });
-    });
-  </script>
 </body>
 </html>
-
-
-
