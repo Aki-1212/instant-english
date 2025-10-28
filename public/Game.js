@@ -13,29 +13,32 @@ const modeSelect = document.getElementById('mode-select')
 const game = document.getElementById('game')
 const resultScreen = document.getElementById('result-screen')
 
-// 難易度選択ボタン
+// ✅ 共通：画面切り替え関数（ちらつき防止）
+function showScreen(target) {
+  [stageSelect, modeSelect, game, resultScreen].forEach(el => (el.style.display = 'none'))
+  target.style.display = 'block'
+}
+
+// --- 難易度選択 ---
 document.querySelectorAll('.difficulty-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     currentDifficulty = btn.dataset.difficulty
     document.getElementById('difficulty').textContent = `難易度：${btn.textContent}`
-    stageSelect.style.display = 'none'
-    modeSelect.style.display = 'block'
+    showScreen(modeSelect)
   })
 })
 
-// モード選択ボタン
+// --- モード選択 ---
 document.querySelectorAll('.mode-btn').forEach(btn => {
   btn.addEventListener('click', async () => {
     inputMode = btn.dataset.mode
-    modeSelect.style.display = 'none'
+    showScreen(game)
     await loadQuestions(currentDifficulty)
   })
 })
 
-// Supabaseから問題取得
+// --- Supabaseから問題取得 ---
 async function loadQuestions(difficulty) {
-  game.style.display = 'block'
-
   const { data, error } = await supabase
     .from('questions')
     .select('*')
@@ -55,14 +58,14 @@ async function loadQuestions(difficulty) {
   showQuestion()
 }
 
-// 問題表示
+// --- 問題表示 ---
 function showQuestion() {
   if (currentIndex >= questions.length) {
     showResult()
     return
   }
 
-  // 前回の結果や入力内容を完全初期化
+  // 初期化
   document.getElementById('result').textContent = ''
   document.getElementById('answer').value = ''
   document.getElementById('user-block-display').textContent = ''
@@ -83,7 +86,7 @@ function showQuestion() {
   }
 }
 
-// 単語ブロック生成
+// --- 単語ブロック生成 ---
 function setupWordBlocks(answer) {
   userAnswerWords = []
   const display = document.getElementById('user-block-display')
@@ -110,7 +113,7 @@ function updateBlockDisplay() {
   document.getElementById('user-block-display').textContent = userAnswerWords.join(' ')
 }
 
-// 配列シャッフル
+// --- 配列シャッフル ---
 function shuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
@@ -119,15 +122,13 @@ function shuffle(array) {
   return array
 }
 
-// --- 回答判定 ---
-
-// テキスト入力
+// --- 回答判定（通常入力） ---
 document.getElementById('submit-btn').addEventListener('click', () => {
   const userAnswer = document.getElementById('answer').value.trim()
   checkAnswer(userAnswer)
 })
 
-// 単語ブロック入力
+// --- 回答判定（ブロック入力） ---
 document.getElementById('block-submit-btn').addEventListener('click', () => {
   checkAnswer(userAnswerWords.join(' '))
 })
@@ -146,14 +147,10 @@ function checkAnswer(userAnswer) {
     resultText = `❌ 例: ${correctAnswer}`
   }
 
-  // 結果表示と色
   const resultEl = document.getElementById('result')
   resultEl.textContent = resultText
-  resultEl.style.color = !userAnswer ? '#dc2626' // 未記入も赤
-                      : isCorrect ? '#059669' // 緑
-                      : '#dc2626' // 赤
+  resultEl.style.color = !userAnswer ? '#dc2626' : isCorrect ? '#059669' : '#dc2626'
 
-  // 履歴追加
   window.answerHistory.push({
     question: questions[currentIndex].question_jp,
     userAnswer: userAnswer || '未記入',
@@ -165,12 +162,11 @@ function checkAnswer(userAnswer) {
   setTimeout(showQuestion, 1000)
 }
 
-// 結果表示
+// --- 結果表示 ---
 function showResult() {
   endTime = new Date()
   const timeSec = ((endTime - startTime) / 1000).toFixed(2)
-  game.style.display = 'none'
-  resultScreen.style.display = 'block'
+  showScreen(resultScreen)
 
   document.getElementById('summary').innerHTML = `
     全${questions.length}問完了！<br>
@@ -187,20 +183,13 @@ function showResult() {
   })
 }
 
-// 結果画面でレベル選択に戻る
+// --- 戻るボタン（ゲーム画面・結果画面共通） ---
 document.getElementById('back-to-stage-btn2').addEventListener('click', () => {
-  game.style.display = 'none'
-  modeSelect.style.display = 'none'
-  resultScreen.style.display = 'none'
-  stageSelect.style.display = 'block'
   window.answerHistory = []
+  showScreen(stageSelect)
 })
 
 document.getElementById('back-to-stage-btn-result').addEventListener('click', () => {
-  game.style.display = 'none'
-  modeSelect.style.display = 'none'
-  resultScreen.style.display = 'none'
-  stageSelect.style.display = 'block'
   window.answerHistory = []
+  showScreen(stageSelect)
 })
-
