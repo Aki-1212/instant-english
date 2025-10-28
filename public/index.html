@@ -21,11 +21,20 @@
     <!-- ゲーム画面 -->
     <div id="game" style="display: none;">
       <p id="difficulty"></p>
-      <p id="progress"></p> <!-- ここに全問数・残り問数を表示 -->
+      <p id="progress"></p> <!-- 全問数・残り問数表示 -->
       <p id="question"></p>
+      
+      <!-- 入力欄 -->
       <input type="text" id="answer" placeholder="英語で入力" />
-      <button id="submit-btn">回答</button>
+      
+
+      <!-- 正誤表示 -->
       <p id="result"></p>
+
+      <!-- 回答履歴表示 -->
+      <ul id="answersUl"></ul>
+
+      <button id="submit-btn">回答</button>
     </div>
 
     <!-- 結果画面 -->
@@ -39,4 +48,3 @@
   <script type="module" src="./Game.js"></script>
 </body>
 </html>
-
