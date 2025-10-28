@@ -55,6 +55,12 @@ function showQuestion() {
   document.getElementById('result').textContent = ''
 }
 
+// 全問数と残り問数を表示
+  const total = questions.length
+  const remaining = total - currentIndex
+  document.getElementById('progress').textContent = `問題 ${currentIndex + 1} / ${total}（残り ${remaining - 1} 問）`
+}
+
 // 回答ボタン押下
 document.getElementById('submit-btn').addEventListener('click', () => {
   const userAnswer = document.getElementById('answer').value.trim()
