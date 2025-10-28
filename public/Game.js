@@ -188,18 +188,35 @@ function checkAnswer(userAnswer) {
   setTimeout(showQuestion, 1000)
 }
 
-// --- 結果表示 ---
 function showResult() {
   endTime = new Date()
   const timeSec = ((endTime - startTime) / 1000).toFixed(2)
   game.style.display = 'none'
   resultScreen.style.display = 'block'
 
-  document.getElementById('summary').innerHTML = `
-    全${questions.length}問完了！<br>
-    経過時間：${timeSec} 秒
+  // --- 難易度ごとの前回タイム取得 ---
+  const prevTimeKey = `prevTime_${currentDifficulty}`
+  const prevTime = localStorage.getItem(prevTimeKey)
+
+  // --- 今回のタイムを保存 ---
+  localStorage.setItem(prevTimeKey, timeSec)
+
+  // --- 結果表示 ---
+  const summaryEl = document.getElementById('summary')
+  summaryEl.innerHTML = `
+    <div class="time-card">
+      <div class="time-row">
+        <span class="label">今回のタイム：</span>
+        <span class="value now">${timeSec} 秒</span>
+      </div>
+      <div class="time-row">
+        <span class="label">前回のタイム：</span>
+        <span class="value prev">${prevTime ? prevTime + ' 秒' : '－－－－－'}</span>
+      </div>
+    </div>
   `
 
+  // --- 結果一覧 ---
   const ul = document.getElementById('resultsUl')
   ul.innerHTML = ''
   window.answerHistory.forEach(item => {
@@ -209,6 +226,7 @@ function showResult() {
     ul.appendChild(li)
   })
 }
+
 
 // --- 戻るボタン ---
 document.getElementById('back-to-stage-btn2').addEventListener('click', resetToStage)
