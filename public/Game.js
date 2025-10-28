@@ -6,31 +6,26 @@ let startTime, endTime
 let currentDifficulty = 'easy'
 let inputMode = 'text'
 let userAnswerWords = []
-let isSubmitting = false // 連打防止フラグ
+let isSubmitting = false
 
 // 要素取得
 const stageSelect = document.getElementById('stage-select')
-const modeSelect = document.getElementById('mode-select')
 const game = document.getElementById('game')
 const resultScreen = document.getElementById('result-screen')
 
-// 難易度選択
-document.querySelectorAll('.difficulty-btn').forEach(btn => {
-  btn.addEventListener('click', () => {
-    currentDifficulty = btn.dataset.difficulty
-    document.getElementById('difficulty').textContent = `難易度：${btn.textContent}`
-    stageSelect.style.display = 'none'
-    modeSelect.style.display = 'block'
-  })
-})
+// --- スタートボタン ---
+document.getElementById('start-btn').addEventListener('click', async () => {
+  const diff = document.querySelector('input[name="difficulty"]:checked').value
+  const mode = document.querySelector('input[name="mode"]:checked').value
 
-// モード選択
-document.querySelectorAll('.mode-btn').forEach(btn => {
-  btn.addEventListener('click', async () => {
-    inputMode = btn.dataset.mode
-    modeSelect.style.display = 'none'
-    await loadQuestions(currentDifficulty)
-  })
+  currentDifficulty = diff
+  inputMode = mode
+
+  document.getElementById('difficulty').textContent = 
+    `難易度：${diff === 'easy' ? '初級' : diff === 'normal' ? '中級' : '上級'}`
+  
+  stageSelect.style.display = 'none'
+  await loadQuestions(currentDifficulty)
 })
 
 // --- 問題取得 ---
@@ -85,7 +80,7 @@ function showQuestion() {
   }
 }
 
-// --- 単語ブロック生成 ---
+// --- ブロック生成 ---
 function setupWordBlocks(answer) {
   userAnswerWords = []
   const display = document.getElementById('user-block-display')
@@ -106,7 +101,7 @@ function setupWordBlocks(answer) {
   updateBlockDisplay()
 }
 
-// --- ブロック選択と解除機能 ---
+// --- 選択・解除 ---
 function selectWord(word, btn) {
   userAnswerWords.push({ word, btn })
   btn.disabled = true
@@ -122,7 +117,6 @@ function updateBlockDisplay() {
     selectedBtn.textContent = item.word
     selectedBtn.className = 'selected-word-btn'
     selectedBtn.addEventListener('click', () => {
-      // クリックで元に戻す
       item.btn.disabled = false
       userAnswerWords.splice(index, 1)
       updateBlockDisplay()
@@ -131,7 +125,7 @@ function updateBlockDisplay() {
   })
 }
 
-// --- 配列シャッフル ---
+// --- シャッフル ---
 function shuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
@@ -140,62 +134,47 @@ function shuffle(array) {
   return array
 }
 
-// --- 回答判定 ---
-// テキスト入力
-document.getElementById('submit-btn').addEventListener('click', () => {
-  if (isSubmitting) return
-  isSubmitting = true
-  const btn = document.getElementById('submit-btn')
-  btn.disabled = true
+// --- 回答チェック ---
+document.getElementById('submit-btn').addEventListener('click', handleSubmit)
+document.getElementById('block-submit-btn').addEventListener('click', handleSubmit)
 
-  const userAnswer = document.getElementById('answer').value.trim()
-  checkAnswer(userAnswer)
-
-  setTimeout(() => {
-    btn.disabled = false
-    isSubmitting = false
-  }, 1200)
-})
-
-// Enterキーで回答
 document.getElementById('answer').addEventListener('keydown', e => {
   if (e.key === 'Enter') {
     e.preventDefault()
-    document.getElementById('submit-btn').click()
+    handleSubmit()
   }
 })
 
-// ブロック回答
-document.getElementById('block-submit-btn').addEventListener('click', () => {
+function handleSubmit() {
   if (isSubmitting) return
   isSubmitting = true
-  const btn = document.getElementById('block-submit-btn')
-  btn.disabled = true
-  checkAnswer(userAnswerWords.map(w => w.word).join(' '))
-  setTimeout(() => {
-    btn.disabled = false
-    isSubmitting = false
-  }, 1200)
-})
+
+  const userAnswer =
+    inputMode === 'text'
+      ? document.getElementById('answer').value.trim()
+      : userAnswerWords.map(w => w.word).join(' ')
+
+  checkAnswer(userAnswer)
+  setTimeout(() => (isSubmitting = false), 1000)
+}
 
 // --- 答え判定 ---
 function checkAnswer(userAnswer) {
   const correctAnswer = questions[currentIndex].answer_en.trim()
   const normalize = str => str.toLowerCase().replace(/[.,!?]/g, '').trim()
   const isCorrect = normalize(userAnswer) === normalize(correctAnswer)
-  let resultText
-
-  if (!userAnswer) {
-    resultText = `❌ 例: ${correctAnswer}`
-  } else if (isCorrect) {
-    resultText = '✅ 正解！'
-  } else {
-    resultText = `❌ 例: ${correctAnswer}`
-  }
 
   const resultEl = document.getElementById('result')
-  resultEl.textContent = resultText
-  resultEl.style.color = !userAnswer ? '#dc2626' : isCorrect ? '#059669' : '#dc2626'
+  if (!userAnswer) {
+    resultEl.textContent = `❌ 例: ${correctAnswer}`
+    resultEl.style.color = '#dc2626'
+  } else if (isCorrect) {
+    resultEl.textContent = '✅ 正解！'
+    resultEl.style.color = '#059669'
+  } else {
+    resultEl.textContent = `❌ 例: ${correctAnswer}`
+    resultEl.style.color = '#dc2626'
+  }
 
   window.answerHistory.push({
     question: questions[currentIndex].question_jp,
@@ -233,7 +212,6 @@ function showResult() {
 // --- 戻るボタン ---
 document.getElementById('back-to-stage-btn2').addEventListener('click', () => {
   game.style.display = 'none'
-  modeSelect.style.display = 'none'
   resultScreen.style.display = 'none'
   stageSelect.style.display = 'block'
   window.answerHistory = []
@@ -241,7 +219,6 @@ document.getElementById('back-to-stage-btn2').addEventListener('click', () => {
 
 document.getElementById('back-to-stage-btn-result').addEventListener('click', () => {
   game.style.display = 'none'
-  modeSelect.style.display = 'none'
   resultScreen.style.display = 'none'
   stageSelect.style.display = 'block'
   window.answerHistory = []
