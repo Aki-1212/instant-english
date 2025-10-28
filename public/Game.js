@@ -30,7 +30,10 @@ const subCategories = {
 function updateSubCategories() {
   const cat = categorySelect.value
   subCategorySelect.innerHTML = ''
-  subCategories[cat].forEach(sub => {
+
+  const subs = subCategories[cat] || []  // undefined なら空配列にする
+
+  subs.forEach(sub => {
     const opt = document.createElement('option')
     opt.value = sub
     opt.textContent = sub
