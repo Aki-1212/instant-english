@@ -1,93 +1,82 @@
+// 簡易的な問題データ（後でSupabaseから取得可能）
+const questions = [
+  { japanese: "私は学生です。", english: "I am a student." },
+  { japanese: "彼は昨日ここに来ました。", english: "He came here yesterday." },
+  { japanese: "あなたはコーヒーが好きですか？", english: "Do you like coffee?" }
+]
 
+let currentIndex = 0
+let startTime
+let selectedDifficulty = null
 
-import { saveScore } from '../api/score'; // スコア保存関数をインポート
-import Stage from './Stage'; // Stageクラスをインポート
+const stageSelect = document.getElementById("stage-select")
+const quiz = document.getElementById("quiz")
+const result = document.getElementById("result")
 
-class Game {
-  constructor() {
-    this.difficulty = 1;  // 難易度（仮）
-    this.stage = 1;       // ステージ（仮）
-    this.time = 0;        // プレイヤーがクリアしたタイム（仮）
-    this.score = 0;       // スコア（仮）
-    this.sessionId = this.generateSessionId(); // セッションID
-    this.stageInstance = null; // 現在のステージインスタンス
-  }
+const questionEl = document.getElementById("japanese-question")
+const inputEl = document.getElementById("english-answer")
+const feedbackEl = document.getElementById("feedback")
+const nextBtn = document.getElementById("next-question")
+const elapsedTimeEl = document.getElementById("elapsed-time")
 
-  // ランダムなセッションIDを生成する関数
-  generateSessionId() {
-    return 'session-' + Math.random().toString(36).substr(2, 9); // ランダムなIDを生成
-  }
+// 難易度選択
+document.querySelectorAll("#stage-select button").forEach(btn => {
+  btn.addEventListener("click", () => {
+    selectedDifficulty = parseInt(btn.dataset.difficulty)
+    startQuiz()
+  })
+})
 
-  // ゲーム開始時に呼ばれる
-  startGame(difficulty) {
-    this.difficulty = difficulty;
-    this.stage = 1; // ステージ番号をリセット（必要であれば変更）
-    console.log("ゲームを開始します。難易度: " + this.difficulty);
-
-    // 新しいステージを初期化して開始
-    this.stageInstance = new Stage(this, this.difficulty, this.stage);
-    this.stageInstance.start(); // ステージ開始
-  }
-
-  // 問題を表示する（ステージ内で呼ばれる）
-  showQuestion(japanese, english) {
-    const questionText = document.getElementById('question-text');
-    questionText.innerText = japanese;
-
-    const answerOptions = document.getElementById('answer-options');
-    answerOptions.innerHTML = ''; // 既存の選択肢をクリア
-
-    // 例: 英語の正解文をボタンとして表示（必要に応じて変更）
-    const optionButton = document.createElement('button');
-    optionButton.innerText = english;
-    optionButton.onclick = () => this.handleAnswer(english);
-    answerOptions.appendChild(optionButton);
-  }
-
-  // ユーザーの入力を受け付ける処理（仮）
-  handleAnswer(answer) {
-    console.log("ユーザーの回答:", answer);
-    
-    // 正解判定（仮で英語の問題文がそのまま正解とする）
-    const currentQuestion = this.stageInstance.questions[this.stageInstance.currentQuestionIndex - 1];
-    if (answer === currentQuestion.english) {
-      this.stageInstance.answerCorrect();
-    } else {
-      this.stageInstance.answerIncorrect();
-    }
-  }
-
-  // ゲーム画面にタイマーを表示
-  updateTimer(time) {
-    const timeLeft = document.getElementById('time-left');
-    timeLeft.innerText = time;
-  }
-
-  // ステージクリア画面を表示する
-  showEndScreen(score) {
-    alert(`ステージクリア！ あなたのスコアは ${score} です。`);
-    this.saveGameScore(score); // スコアを保存
-  }
-
-  // スコアを保存する
-  async saveGameScore(score) {
-    const result = await saveScore(score, this.difficulty, this.stage, this.time);
-    if (result) {
-      console.log('スコアが保存されました', result);
-    } else {
-      console.error('スコア保存に失敗しました');
-    }
-  }
-
-  // ゲームをリセットする（必要に応じて）
-  resetGame() {
-    this.difficulty = 1;
-    this.stage = 1;
-    this.score = 0;
-    this.time = 0;
-    this.sessionId = this.generateSessionId();
-    console.log('ゲームをリセットしました。');
-  }
+function startQuiz() {
+  stageSelect.classList.add("hidden")
+  quiz.classList.remove("hidden")
+  currentIndex = 0
+  startTime = Date.now()
+  showQuestion()
 }
 
-export default Game;
+function showQuestion() {
+  const q = questions[currentIndex]
+  questionEl.textContent = q.japanese
+  inputEl.value = ""
+  feedbackEl.textContent = ""
+  nextBtn.classList.add("hidden")
+}
+
+document.getElementById("submit-answer").addEventListener("click", () => {
+  const userAnswer = inputEl.value.trim().toLowerCase()
+  const correctAnswer = questions[currentIndex].english.toLowerCase()
+
+  if (userAnswer === correctAnswer || userAnswer.includes(correctAnswer.split(" ")[0])) {
+    feedbackEl.textContent = "✅ 正解！"
+    feedbackEl.style.color = "green"
+  } else {
+    feedbackEl.textContent = `❌ 不正解。正解は: ${questions[currentIndex].english}`
+    feedbackEl.style.color = "red"
+  }
+
+  nextBtn.classList.remove("hidden")
+})
+
+nextBtn.addEventListener("click", () => {
+  currentIndex++
+  if (currentIndex < questions.length) {
+    showQuestion()
+  } else {
+    endQuiz()
+  }
+})
+
+function endQuiz() {
+  quiz.classList.add("hidden")
+  result.classList.remove("hidden")
+
+  const elapsedSec = ((Date.now() - startTime) / 1000).toFixed(1)
+  elapsedTimeEl.textContent = elapsedSec
+}
+
+// リトライ
+document.getElementById("retry").addEventListener("click", () => {
+  result.classList.add("hidden")
+  stageSelect.classList.remove("hidden")
+})
