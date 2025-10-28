@@ -9,6 +9,7 @@ let currentDifficulty = 'easy'
 const stageSelect = document.getElementById('stage-select')
 const game = document.getElementById('game')
 const resultScreen = document.getElementById('result-screen')
+const answersUl = document.getElementById('answersUl')
 
 // 難易度選択ボタン
 document.querySelectorAll('.difficulty-btn').forEach(btn => {
@@ -23,6 +24,7 @@ document.querySelectorAll('.difficulty-btn').forEach(btn => {
 async function loadQuestions(difficulty) {
   stageSelect.style.display = 'none'
   game.style.display = 'block'
+  answersUl.innerHTML = '' // 前の回答履歴クリア
 
   const { data, error } = await supabase
     .from('questions')
@@ -56,10 +58,7 @@ function showQuestion() {
 
   // 全問数と残り問数を表示
   const total = questions.length
-  const remaining = total - currentIndex
   document.getElementById('progress').textContent = `問題 ${currentIndex + 1} / ${total}`
-
-
 }
 
 // 回答ボタン押下
@@ -70,9 +69,19 @@ document.getElementById('submit-btn').addEventListener('click', () => {
   const normalize = (str) => str.toLowerCase().replace(/[.,!?]/g, '').trim()
   const isCorrect = normalize(userAnswer) === normalize(correctAnswer)
 
-  document.getElementById('result').textContent = isCorrect
-    ? '✅ 正解！'
-    : `❌ 不正解\n正しい答え: ${correctAnswer}`
+  // 正誤表示
+  const resultEl = document.getElementById('result')
+  resultEl.textContent = isCorrect
+    ? '〇 '
+    : `❌ `
+
+  resultEl.className = isCorrect ? 'correct' : 'incorrect'
+
+  // 回答履歴に追加
+  const li = document.createElement('li')
+  li.textContent = `Q: ${questions[currentIndex].question_jp} → A: ${correctAnswer} (${isCorrect ? '〇' : '×'})`
+  li.className = isCorrect ? 'correct' : 'incorrect'
+  answersUl.appendChild(li)
 
   currentIndex++
   setTimeout(showQuestion, 1500)
