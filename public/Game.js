@@ -1,4 +1,4 @@
-import { supabase } from './lib/supabaseClient.js'
+// import { supabase } from './lib/supabaseClient.js'  // ←不要
 
 let questions = []
 let currentIndex = 0
@@ -32,7 +32,6 @@ function updateSubCategories() {
   subCategorySelect.innerHTML = ''
 
   const subs = subCategories[cat] || []  // undefined なら空配列にする
-
   subs.forEach(sub => {
     const opt = document.createElement('option')
     opt.value = sub
@@ -56,32 +55,32 @@ startBtn.addEventListener('click', async () => {
   await loadQuestions(category, subCategory, level)
 })
 
-// --- 問題取得 ---
+// --- 問題取得（JSON版） ---
 async function loadQuestions(category, subCategory, level) {
   game.style.display = 'block'
 
-  const { data, error } = await supabase
-    .from('questions')
-    .select('*')
-    .eq('category', category)
-    .eq('sub_category', subCategory)
-    .eq('level', level)
+  try {
+    // JSONファイルのパスを作成
+    const filePath = `./questions/${encodeURIComponent(category)}/${encodeURIComponent(subCategory)}.json`
+    const response = await fetch(filePath)
+    const data = await response.json()
 
-  if (error) {
-    console.error('問題取得エラー:', error)
+    // 該当レベルの問題だけ抽出
+    const levelQuestions = data.questions.filter(q => q.level === parseInt(level))
+
+    // ランダム10問抽出
+    questions = shuffle(levelQuestions).slice(0, 10)
+    currentIndex = 0
+    startTime = new Date()
+    window.answerHistory = []
+    showQuestion()
+  } catch (err) {
+    console.error('問題取得エラー:', err)
     alert('問題を取得できませんでした。')
-    return
   }
-
-  // 30問プールからランダム10問を抽出
-  questions = shuffle(data).slice(0, 10)
-  currentIndex = 0
-  startTime = new Date()
-  window.answerHistory = []
-  showQuestion()
 }
 
-// --- 問題表示 ---
+// --- 以下の showQuestion 以降は既存コードと同じ ---
 function showQuestion() {
   if (currentIndex >= questions.length) {
     showResult()
@@ -110,7 +109,7 @@ function showQuestion() {
   }
 }
 
-// --- 単語ブロック生成 ---
+// --- 単語ブロック生成・クリック処理・表示更新 ---
 function setupWordBlocks(answer) {
   const display = document.getElementById('user-block-display')
   const blocks = document.getElementById('word-blocks')
@@ -130,7 +129,6 @@ function setupWordBlocks(answer) {
   })
 }
 
-// --- 単語ブロッククリック処理 ---
 function toggleWord(word, btn) {
   const isSelected = btn.dataset.selected === 'true'
 
@@ -149,7 +147,6 @@ function toggleWord(word, btn) {
   updateBlockDisplay()
 }
 
-// --- 単語ブロック表示更新 ---
 function updateBlockDisplay() {
   const display = document.getElementById('user-block-display')
   display.textContent = userAnswerWords.join(' ')
