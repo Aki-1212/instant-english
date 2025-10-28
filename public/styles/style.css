@@ -159,6 +159,7 @@ button:disabled {
   cursor: pointer;
   transition: all 0.2s;
   font-size: 14px;
+  color: black;
 }
 .word-btn:hover {
   background: #f1f1f1;
@@ -220,4 +221,5 @@ button:disabled {
   #difficulty-options, #mode-options { flex-direction: column; align-items: center; }
   .option-card { width: 80%; }
 }
+
 
