@@ -102,8 +102,8 @@ button:hover {
 
 /* 単語ブロックボタン */
 .word-btn {
-  background-color: #3b82f6; /* 青系 */
-  color: white;
+  background-color: #3b82f6;
+  color: black;
   border: none;
   border-radius: 6px;
   padding: 10px 15px;
@@ -212,5 +212,6 @@ button:hover {
   .speak-small-btn { font-size: 16px; margin-left: 4px; }
   #speakBtn { font-size: 20px; }
 }
+
 
 
