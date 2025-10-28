@@ -13,19 +13,19 @@ const stageSelect = document.getElementById('stage-select')
 const game = document.getElementById('game')
 const resultScreen = document.getElementById('result-screen')
 
-// --- スタートボタン ---
-document.getElementById('start-btn').addEventListener('click', async () => {
-  const diff = document.querySelector('input[name="difficulty"]:checked').value
-  const mode = document.querySelector('input[name="mode"]:checked').value
+// --- 難易度ボタンで即ゲーム開始 ---
+document.querySelectorAll('.difficulty-btn').forEach(btn => {
+  btn.addEventListener('click', async () => {
+    const selectedMode = document.querySelector('input[name="mode"]:checked').value
+    currentDifficulty = btn.dataset.difficulty
+    inputMode = selectedMode
 
-  currentDifficulty = diff
-  inputMode = mode
+    document.getElementById('difficulty').textContent = 
+      `難易度：${currentDifficulty === 'easy' ? '初級' : currentDifficulty === 'normal' ? '中級' : '上級'}`
 
-  document.getElementById('difficulty').textContent = 
-    `難易度：${diff === 'easy' ? '初級' : diff === 'normal' ? '中級' : '上級'}`
-  
-  stageSelect.style.display = 'none'
-  await loadQuestions(currentDifficulty)
+    stageSelect.style.display = 'none'
+    await loadQuestions(currentDifficulty)
+  })
 })
 
 // --- 問題取得 ---
@@ -137,7 +137,6 @@ function shuffle(array) {
 // --- 回答チェック ---
 document.getElementById('submit-btn').addEventListener('click', handleSubmit)
 document.getElementById('block-submit-btn').addEventListener('click', handleSubmit)
-
 document.getElementById('answer').addEventListener('keydown', e => {
   if (e.key === 'Enter') {
     e.preventDefault()
@@ -155,7 +154,7 @@ function handleSubmit() {
       : userAnswerWords.map(w => w.word).join(' ')
 
   checkAnswer(userAnswer)
-  setTimeout(() => (isSubmitting = false), 1000)
+  setTimeout(() => (isSubmitting = false), 500)
 }
 
 // --- 答え判定 ---
@@ -210,16 +209,12 @@ function showResult() {
 }
 
 // --- 戻るボタン ---
-document.getElementById('back-to-stage-btn2').addEventListener('click', () => {
-  game.style.display = 'none'
-  resultScreen.style.display = 'none'
-  stageSelect.style.display = 'block'
-  window.answerHistory = []
-})
+document.getElementById('back-to-stage-btn2').addEventListener('click', resetToStage)
+document.getElementById('back-to-stage-btn-result').addEventListener('click', resetToStage)
 
-document.getElementById('back-to-stage-btn-result').addEventListener('click', () => {
+function resetToStage() {
   game.style.display = 'none'
   resultScreen.style.display = 'none'
   stageSelect.style.display = 'block'
   window.answerHistory = []
-})
+}
