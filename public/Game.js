@@ -196,3 +196,11 @@ document.getElementById('back-to-stage-btn2').addEventListener('click', () => {
   window.answerHistory = []
 })
 
+document.getElementById('back-to-stage-btn-result').addEventListener('click', () => {
+  game.style.display = 'none'
+  modeSelect.style.display = 'none'
+  resultScreen.style.display = 'none'
+  stageSelect.style.display = 'block'
+  window.answerHistory = []
+})
+
