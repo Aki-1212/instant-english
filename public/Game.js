@@ -53,12 +53,13 @@ function showQuestion() {
   document.getElementById('question').textContent = q.question_jp
   document.getElementById('answer').value = ''
   document.getElementById('result').textContent = ''
-}
 
-// 全問数と残り問数を表示
+  // 全問数と残り問数を表示
   const total = questions.length
   const remaining = total - currentIndex
   document.getElementById('progress').textContent = `問題 ${currentIndex + 1} / ${total}（残り ${remaining - 1} 問）`
+
+
 }
 
 // 回答ボタン押下
