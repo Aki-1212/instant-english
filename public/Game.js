@@ -80,8 +80,8 @@ document.getElementById('submit-btn').addEventListener('click', () => {
   // 正誤表示（ゲーム中のみ）
   const resultEl = document.getElementById('result')
   resultEl.textContent = isCorrect
-    ? '✅ '
-    : `❌ `
+    ? '✅ (例)${correctAnswer}'
+    : `❌ (例)${correctAnswer}`
   resultEl.className = isCorrect ? 'correct' : 'incorrect'
 
   // 履歴に追加
@@ -114,7 +114,7 @@ function showResult() {
     li.innerHTML = `
       <strong>Q${i + 1}:</strong> ${a.question} <br>
       <strong>あなたの答え:</strong> ${a.userAnswer} <br>
-      <strong>正解:</strong> ${a.correctAnswer} (${a.isCorrect ? '〇' : '×'})
+      <strong>正解:</strong> ${a.correctAnswer} 
     `
     resultsUl.appendChild(li)
   })
