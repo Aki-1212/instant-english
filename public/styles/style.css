@@ -184,6 +184,7 @@ button:hover {
   cursor: pointer;
   font-size: 14px;
   transition: 0.2s;
+  color: black;
 }
 
 .selected-word-btn:hover {
@@ -212,6 +213,7 @@ button:hover {
   .speak-small-btn { font-size: 16px; margin-left: 4px; }
   #speakBtn { font-size: 20px; }
 }
+
 
 
 
