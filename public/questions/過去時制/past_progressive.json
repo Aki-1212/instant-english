@@ -1,0 +1,76 @@
+{
+  "category": "過去時制",
+  "sub_category": "過去進行形",
+  "levels": {
+    "1": [
+      { "question_jp": "私は昨日テレビを見ていた。", "answer_en": "I was watching TV yesterday." },
+      { "question_jp": "彼は音楽を聴いていた。", "answer_en": "He was listening to music." },
+      { "question_jp": "私は夕食を食べていた。", "answer_en": "I was eating dinner." },
+      { "question_jp": "彼女は勉強していた。", "answer_en": "She was studying." },
+      { "question_jp": "私は手紙を書いていた。", "answer_en": "I was writing a letter." },
+      { "question_jp": "彼は走っていた。", "answer_en": "He was running." },
+      { "question_jp": "私は昼寝をしていた。", "answer_en": "I was taking a nap." },
+      { "question_jp": "彼女はピアノを弾いていた。", "answer_en": "She was playing the piano." },
+      { "question_jp": "私はそのとき本を読んでいた。", "answer_en": "I was reading a book at that time." },
+      { "question_jp": "彼はバスを待っていた。", "answer_en": "He was waiting for the bus." },
+      { "question_jp": "私は電話をしていた。", "answer_en": "I was talking on the phone." },
+      { "question_jp": "彼女はコーヒーを飲んでいた。", "answer_en": "She was drinking coffee." },
+      { "question_jp": "私は音楽を聴きながら歩いていた。", "answer_en": "I was walking while listening to music." },
+      { "question_jp": "彼は宿題をしていた。", "answer_en": "He was doing his homework." },
+      { "question_jp": "私は友達と話していた。", "answer_en": "I was talking with my friend." },
+      { "question_jp": "彼女は笑っていた。", "answer_en": "She was laughing." },
+      { "question_jp": "私は部屋を掃除していた。", "answer_en": "I was cleaning my room." },
+      { "question_jp": "彼はゲームをしていた。", "answer_en": "He was playing a game." },
+      { "question_jp": "私はその時バスに乗っていた。", "answer_en": "I was riding the bus at that time." },
+      { "question_jp": "彼女は犬と遊んでいた。", "answer_en": "She was playing with her dog." },
+      { "question_jp": "私は仕事をしていた。", "answer_en": "I was working." },
+      { "question_jp": "彼は笑顔で話していた。", "answer_en": "He was talking with a smile." },
+      { "question_jp": "私はニュースを見ていた。", "answer_en": "I was watching the news." },
+      { "question_jp": "彼女は走って駅へ向かっていた。", "answer_en": "She was running to the station." },
+      { "question_jp": "私は友達を待っていた。", "answer_en": "I was waiting for my friend." },
+      { "question_jp": "彼は料理をしていた。", "answer_en": "He was cooking." },
+      { "question_jp": "私はシャワーを浴びていた。", "answer_en": "I was taking a shower." },
+      { "question_jp": "彼女は花に水をやっていた。", "answer_en": "She was watering the flowers." },
+      { "question_jp": "私はパソコンを使っていた。", "answer_en": "I was using the computer." },
+      { "question_jp": "彼はその時寝ていた。", "answer_en": "He was sleeping at that time." }
+    ],
+    "2": [
+      { "question_jp": "私は昨日の夜、映画を見ていた。", "answer_en": "I was watching a movie last night." },
+      { "question_jp": "彼は昨日の午後、サッカーをしていた。", "answer_en": "He was playing soccer yesterday afternoon." },
+      { "question_jp": "私はその時、宿題をしていた。", "answer_en": "I was doing my homework at that time." },
+      { "question_jp": "彼女は昨日、音楽を聴いていた。", "answer_en": "She was listening to music yesterday." },
+      { "question_jp": "私たちはその時、駅へ向かっていた。", "answer_en": "We were heading to the station at that time." },
+      { "question_jp": "彼は昨日の夜、テレビを見ていた。", "answer_en": "He was watching TV last night." },
+      { "question_jp": "私はその時、夕食を作っていた。", "answer_en": "I was cooking dinner at that time." },
+      { "question_jp": "彼女は昨日の朝、コーヒーを飲んでいた。", "answer_en": "She was drinking coffee yesterday morning." },
+      { "question_jp": "彼らは午後3時にテニスをしていた。", "answer_en": "They were playing tennis at 3 p.m." },
+      { "question_jp": "私は昨日の午後、本を読んでいた。", "answer_en": "I was reading a book yesterday afternoon." },
+      { "question_jp": "彼は昨日の夜、メールを書いていた。", "answer_en": "He was writing an email last night." },
+      { "question_jp": "私はその時、友達と電話をしていた。", "answer_en": "I was talking with my friend on the phone at that time." },
+      { "question_jp": "彼女は昨日の夜、勉強していた。", "answer_en": "She was studying last night." },
+      { "question_jp": "私たちは夕方、散歩をしていた。", "answer_en": "We were taking a walk in the evening." },
+      { "question_jp": "彼はその時、バスを待っていた。", "answer_en": "He was waiting for the bus at that time." },
+      { "question_jp": "私は昨日の夜、英語を練習していた。", "answer_en": "I was practicing English last night." },
+      { "question_jp": "彼女はその時、ピアノを弾いていた。", "answer_en": "She was playing the piano at that time." },
+      { "question_jp": "私は昨日の朝、ニュースを見ていた。", "answer_en": "I was watching the news yesterday morning." },
+      { "question_jp": "彼らはその時、昼ごはんを食べていた。", "answer_en": "They were eating lunch at that time." },
+      { "question_jp": "私は昨日、車を運転していた。", "answer_en": "I was driving a car yesterday." },
+      { "question_jp": "彼はその時、犬と遊んでいた。", "answer_en": "He was playing with his dog at that time." },
+      { "question_jp": "私は午後、図書館で勉強していた。", "answer_en": "I was studying at the library in the afternoon." },
+      { "question_jp": "彼女は昨日の夜、メールを読んでいた。", "answer_en": "She was reading an email last night." },
+      { "question_jp": "私はその時、料理をしていた。", "answer_en": "I was cooking at that time." },
+      { "question_jp": "彼らは夜遅くまで話していた。", "answer_en": "They were talking until late at night." },
+      { "question_jp": "私は昨日、写真を撮っていた。", "answer_en": "I was taking pictures yesterday." },
+      { "question_jp": "彼はその時、手紙を書いていた。", "answer_en": "He was writing a letter at that time." },
+      { "question_jp": "私は昨日の夜、雨の音を聞いていた。", "answer_en": "I was listening to the sound of rain last night." },
+      { "question_jp": "彼女はその時、バスに乗っていた。", "answer_en": "She was riding the bus at that time." },
+      { "question_jp": "私はその時、友達を待っていた。", "answer_en": "I was waiting for my friend at that time." }
+    ],
+      "3": [
+      
+    ]
+  }
+}
+
+
+      
