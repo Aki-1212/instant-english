@@ -31,7 +31,7 @@ function updateSubCategories() {
   const cat = categorySelect.value
   subCategorySelect.innerHTML = ''
 
-  const subs = subCategories[cat] || []  // undefined なら空配列にする
+  const subs = subCategories[cat] || []
   subs.forEach(sub => {
     const opt = document.createElement('option')
     opt.value = sub
@@ -55,21 +55,22 @@ startBtn.addEventListener('click', async () => {
   await loadQuestions(category, subCategory, level)
 })
 
-// --- 問題取得（JSON版） ---
+// --- 問題取得（型1対応） ---
 async function loadQuestions(category, subCategory, level) {
   game.style.display = 'block'
 
   try {
-    // JSONファイルのパスを作成
     const filePath = `./questions/${encodeURIComponent(category)}/${encodeURIComponent(subCategory)}.json`
     const response = await fetch(filePath)
+    if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)
+
     const data = await response.json()
 
-    // 該当レベルの問題だけ抽出
-    const levelQuestions = data.questions.filter(q => q.level === parseInt(level))
+    // 型1では levels が "1" | "2" | "3" のキーで問題配列を持つ
+    const levelKey = String(level)  // "1" | "2" | "3"
+    if (!data.levels[levelKey]) throw new Error(`レベル ${level} の問題が存在しません`)
 
-    // ランダム10問抽出
-    questions = shuffle(levelQuestions).slice(0, 10)
+    questions = shuffle(data.levels[levelKey]).slice(0, 10)
     currentIndex = 0
     startTime = new Date()
     window.answerHistory = []
@@ -80,7 +81,7 @@ async function loadQuestions(category, subCategory, level) {
   }
 }
 
-// --- 以下の showQuestion 以降は既存コードと同じ ---
+// --- 以下、既存の showQuestion 以降のコードをそのまま使用 ---
 function showQuestion() {
   if (currentIndex >= questions.length) {
     showResult()
@@ -109,7 +110,6 @@ function showQuestion() {
   }
 }
 
-// --- 単語ブロック生成・クリック処理・表示更新 ---
 function setupWordBlocks(answer) {
   const display = document.getElementById('user-block-display')
   const blocks = document.getElementById('word-blocks')
@@ -152,7 +152,6 @@ function updateBlockDisplay() {
   display.textContent = userAnswerWords.join(' ')
 }
 
-// --- 配列シャッフル ---
 function shuffle(array) {
   for (let i = array.length - 1; i > 0; i--) {
     const j = Math.floor(Math.random() * (i + 1))
@@ -184,7 +183,6 @@ function handleSubmit() {
   setTimeout(() => (isSubmitting = false), 500)
 }
 
-// --- 答え判定 ---
 function checkAnswer(userAnswer) {
   const correctAnswer = questions[currentIndex].answer_en.trim()
   const normalize = str => str.toLowerCase().replace(/[.,!?]/g, '').trim()
@@ -213,7 +211,6 @@ function checkAnswer(userAnswer) {
   setTimeout(showQuestion, 1000)
 }
 
-// --- 結果表示 ---
 function showResult() {
   endTime = new Date()
   const timeSec = ((endTime - startTime) / 1000).toFixed(2)
