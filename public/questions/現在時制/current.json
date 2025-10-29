@@ -2,11 +2,9 @@
 {
   "category": "現在時制",
   "sub_category": "現在形",
-  "levels": [
+  "levels": 
     {
-      "level": 1,
-      "questions": [
-        {"question_jp": "私は毎朝パンを食べます。", "answer_en": "I eat bread every morning."},
+      "1": [{"question_jp": "私は毎朝パンを食べます。", "answer_en": "I eat bread every morning."},
       {"question_jp": "彼は学校に行きます。", "answer_en": "He goes to school."},
       {"question_jp": "犬が庭で走ります。", "answer_en": "The dog runs in the yard."},
       {"question_jp": "私は水を飲みます。", "answer_en": "I drink water."},
@@ -36,12 +34,8 @@
       {"question_jp": "私は昼にサンドイッチを食べます。", "answer_en": "I eat a sandwich at lunch."},
       {"question_jp": "彼女は毎日英語を勉強します。", "answer_en": "She studies English every day."},
       {"question_jp": "犬が庭で遊びます。", "answer_en": "The dog plays in the yard."}
-      ]
-    },
-    {
-      "level": 2,
-      "questions": [
-        {"question_jp": "私は毎朝7時に公園でジョギングをします。", "answer_en": "I jog in the park every morning at 7."},
+],
+      "2": [      {"question_jp": "私は毎朝7時に公園でジョギングをします。", "answer_en": "I jog in the park every morning at 7."},
       {"question_jp": "彼女は毎週土曜日に図書館で本を読みます。", "answer_en": "She reads books in the library every Saturday."},
       {"question_jp": "私は昼休みに会社のカフェでサンドイッチを食べます。", "answer_en": "I eat a sandwich at the company cafe during lunch break."},
       {"question_jp": "彼は毎晩家でピアノを弾きます。", "answer_en": "He plays the piano at home every night."},
@@ -71,12 +65,8 @@
       {"question_jp": "彼は毎朝駅で新聞を読みます。", "answer_en": "He reads the newspaper at the station every morning."},
       {"question_jp": "私たちは毎週火曜日に図書館で勉強します。", "answer_en": "We study in the library every Tuesday."},
       {"question_jp": "彼女は毎朝家でストレッチをします。", "answer_en": "She does stretches at home every morning."}
-      ]
-    },
-    {
-      "level": 3,
-      "questions": [
-        {"question_jp": "私は毎朝7時に公園でジョギングをして、その後カフェで朝食を取ります。", "answer_en": "I jog in the park every morning at 7 and then have breakfast at a cafe."},
+],
+      "3": [      {"question_jp": "私は毎朝7時に公園でジョギングをして、その後カフェで朝食を取ります。", "answer_en": "I jog in the park every morning at 7 and then have breakfast at a cafe."},
     {"question_jp": "彼女は毎週土曜日に図書館で本を読み、友達と感想を話し合います。", "answer_en": "She reads books in the library every Saturday and discusses them with her friends."},
     {"question_jp": "私は昼休みに会社のカフェでサンドイッチを食べながらニュースを読みます。", "answer_en": "I eat a sandwich at the company cafe during lunch break while reading the news."},
     {"question_jp": "彼は毎晩家でピアノを弾き、妹にレッスンを教えます。", "answer_en": "He plays the piano at home every night and gives lessons to his sister."},
@@ -105,9 +95,13 @@
     {"question_jp": "彼は毎晩寝る前に日記を書き、翌日の予定を確認します。", "answer_en": "He writes a diary every night before going to bed and checks the next day's schedule."},
     {"question_jp": "私は朝食後に散歩をして、帰宅後にコーヒーを飲みます。", "answer_en": "I take a walk after breakfast and then drink coffee when I return home."},
     {"question_jp": "彼女は毎週火曜日に図書館で勉強し、その後カフェで友達と話します。", "answer_en": "She studies at the library every Tuesday and then talks with friends at a cafe."},
-    {"question_jp": "私は毎晩音楽を聴きながら軽くストレッチをします。", "answer_en": "I do light stretches every night while listening to music."}
-  ]
+    {"question_jp": "私は毎晩音楽を聴きながら軽くストレッチをします。", "answer_en": "I do light stretches every night while listening to music."}]
     }
-  ]
-}
+  }
+
+
+
+
+
+
 

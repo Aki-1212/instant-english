@@ -1,12 +1,9 @@
-
 {
   "category": "現在時制",
   "sub_category": "現在完了進行形",
-  "levels": [
+  "levels": 
     {
-      "level": 1,
-      "questions": [
-        {"question_jp": "私は今朝から勉強し続けています。", "answer_en": "I have been studying since this morning."},
+      "1": [        {"question_jp": "私は今朝から勉強し続けています。", "answer_en": "I have been studying since this morning."},
     {"question_jp": "彼はずっと本を読んでいます。", "answer_en": "He has been reading a book."},
     {"question_jp": "私たちは1時間ずっと歩き続けています。", "answer_en": "We have been walking for an hour."},
     {"question_jp": "彼女はずっと歌っています。", "answer_en": "She has been singing."},
@@ -36,12 +33,8 @@
     {"question_jp": "彼女はずっと文章を書いています。", "answer_en": "She has been writing an essay."},
     {"question_jp": "私はずっとゲームをしています。", "answer_en": "I have been playing a game."},
     {"question_jp": "彼はずっと本を読んでいます。", "answer_en": "He has been reading books."}
-      ]
-    },
-    {
-      "level": 2,
-      "questions": [
-        {"question_jp": "私は今朝から図書館で勉強し続けています。", "answer_en": "I have been studying at the library since this morning."},
+],
+      "2": [{"question_jp": "私は今朝から図書館で勉強し続けています。", "answer_en": "I have been studying at the library since this morning."},
     {"question_jp": "彼は午後ずっと公園でジョギングをしています。", "answer_en": "He has been jogging in the park all afternoon."},
     {"question_jp": "私たちは1時間ずっと教室でプレゼンの練習をしています。", "answer_en": "We have been practicing our presentation in the classroom for an hour."},
     {"question_jp": "彼女は午前中ずっとカフェで絵を描いています。", "answer_en": "She has been drawing at the cafe all morning."},
@@ -71,13 +64,8 @@
     {"question_jp": "彼女は駅でずっと友達を待っています。", "answer_en": "She has been waiting for her friend at the station."},
     {"question_jp": "私は庭でずっと犬と遊んでいます。", "answer_en": "I have been playing with the dog in the garden."},
     {"question_jp": "彼は部屋でずっと音楽を聴いています。", "answer_en": "He has been listening to music in his room."},
-    {"question_jp": "私たちはリビングでずっとテレビを見ています。", "answer_en": "We have been watching TV in the living room."}
-      ]
-    },
-    {
-      "level": 3,
-      "questions": [
-        {"question_jp": "私は今朝からずっと図書館で英語の勉強をしており、新しい単語を覚え続けています。", "answer_en": "I have been studying English at the library since this morning, continuously learning new words."},
+    {"question_jp": "私たちはリビングでずっとテレビを見ています。", "answer_en": "We have been watching TV in the living room."}],
+      "3": [{"question_jp": "私は今朝からずっと図書館で英語の勉強をしており、新しい単語を覚え続けています。", "answer_en": "I have been studying English at the library since this morning, continuously learning new words."},
     {"question_jp": "彼は午後ずっと公園でジョギングをしており、体力をつけるために走り続けています。", "answer_en": "He has been jogging in the park all afternoon to improve his stamina."},
     {"question_jp": "私たちは1時間以上教室でプレゼンの練習をしており、先生に指摘された部分を直し続けています。", "answer_en": "We have been practicing our presentation in the classroom for over an hour, correcting the parts pointed out by the teacher."},
     {"question_jp": "彼女は午前中ずっとカフェで絵を描きながら、友達に見せる作品を完成させようとしています。", "answer_en": "She has been drawing at the cafe all morning, trying to finish a piece to show her friends."},
@@ -107,10 +95,8 @@
     {"question_jp": "彼女は駅でずっと友達を待ち続けており、列車の遅延情報を気にしています。", "answer_en": "She has been waiting for her friend at the station, keeping an eye on train delays."},
     {"question_jp": "私は庭でずっと犬と遊び続けており、犬の運動不足を解消しています。", "answer_en": "I have been playing with the dog in the garden, helping it get enough exercise."},
     {"question_jp": "彼は部屋でずっと音楽を聴き続けており、新しいアルバムの曲を覚えています。", "answer_en": "He has been listening to music in his room, memorizing the tracks of a new album."},
-    {"question_jp": "私たちはリビングでずっとテレビを見続けており、ニュースを詳細にチェックしています。", "answer_en": "We have been watching TV in the living room, checking the news in detail."}
-
-  ]
+    {"question_jp": "私たちはリビングでずっとテレビを見続けており、ニュースを詳細にチェックしています。", "answer_en": "We have been watching TV in the living room, checking the news in detail."}]
     }
-  ]
-}
+  }
+
 

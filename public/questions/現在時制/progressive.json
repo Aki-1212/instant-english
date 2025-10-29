@@ -1,11 +1,10 @@
+
 {
   "category": "現在時制",
   "sub_category": "現在進行形",
-  "levels": [
+  "levels": 
     {
-      "level": 1,
-      "questions": [
-        {"question_jp": "私は今、音楽を聴いています。", "answer_en": "I am listening to music now."},
+      "1": [        {"question_jp": "私は今、音楽を聴いています。", "answer_en": "I am listening to music now."},
         {"question_jp": "彼は今、本を読んでいます。", "answer_en": "He is reading a book now."},
         {"question_jp": "彼女は今、料理をしています。", "answer_en": "She is cooking now."},
         {"question_jp": "私たちは今、公園で歩いています。", "answer_en": "We are walking in the park now."},
@@ -35,12 +34,8 @@
         {"question_jp": "彼女は今、勉強しています。", "answer_en": "She is studying now."},
         {"question_jp": "私は今、歌を歌っています。", "answer_en": "I am singing now."},
         {"question_jp": "彼は今、庭で草を刈っています。", "answer_en": "He is mowing the lawn now."}
-      ]
-    },
-    {
-      "level": 2,
-      "questions": [
-        {"question_jp": "私は今、リビングで音楽を聴きながら宿題をしています。", "answer_en": "I am listening to music in the living room while doing my homework now."},
+],
+      "2": [        {"question_jp": "私は今、リビングで音楽を聴きながら宿題をしています。", "answer_en": "I am listening to music in the living room while doing my homework now."},
         {"question_jp": "彼は今、駅のカフェで本を読んでいます。", "answer_en": "He is reading a book at the cafe in the station now."},
         {"question_jp": "彼女は今、台所で夕食の準備をしています。", "answer_en": "She is preparing dinner in the kitchen now."},
         {"question_jp": "私たちは今、公園でジョギングをしながら話しています。", "answer_en": "We are jogging in the park while talking now."},
@@ -70,12 +65,8 @@
         {"question_jp": "彼女は今、勉強をしながら音楽を聴いています。", "answer_en": "She is studying while listening to music now."},
         {"question_jp": "私は今、歌を歌いながらギターを弾いています。", "answer_en": "I am singing while playing the guitar now."},
         {"question_jp": "彼は今、庭で草を刈りながら水をやっています。", "answer_en": "He is mowing the lawn while watering the plants now."}
-      ]
-    },
-    {
-      "level": 3,
-      "questions": [
-        {"question_jp": "私は今、リビングで音楽を聴きながら宿題をして、時々ノートを見直しています。", "answer_en": "I am listening to music in the living room while doing my homework and occasionally reviewing my notes now."},
+],
+      "3": [        {"question_jp": "私は今、リビングで音楽を聴きながら宿題をして、時々ノートを見直しています。", "answer_en": "I am listening to music in the living room while doing my homework and occasionally reviewing my notes now."},
     {"question_jp": "彼は今、駅のカフェで本を読んでいる間に友達にメッセージを送っています。", "answer_en": "He is reading a book at the cafe in the station while sending messages to his friend now."},
     {"question_jp": "彼女は今、台所で夕食を準備しながら電話で話しています。", "answer_en": "She is preparing dinner in the kitchen while talking on the phone now."},
     {"question_jp": "私たちは今、公園でジョギングをしながら空の写真を撮っています。", "answer_en": "We are jogging in the park while taking pictures of the sky now."},
@@ -105,7 +96,7 @@
     {"question_jp": "彼は今、リビングでゲームをしながらチャットで友達と話しています。", "answer_en": "He is playing a game in the living room while chatting with friends now."},
     {"question_jp": "私は今、音楽を聴きながら料理をして、同時にタイマーを確認しています。", "answer_en": "I am listening to music while cooking and simultaneously checking the timer now."},
     {"question_jp": "彼女は今、庭で植物に水をやりながら日記を書いています。", "answer_en": "She is watering the plants in the garden while writing in her diary now."}
-  ]
+]
     }
-  ]
-}
+  }
+

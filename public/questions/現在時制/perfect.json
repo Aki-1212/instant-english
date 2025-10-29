@@ -1,11 +1,10 @@
+
 {
   "category": "現在時制",
   "sub_category": "現在完了形",
-  "levels": [
+  "levels": 
     {
-      "level": 1,
-      "questions": [
-        {"question_jp": "私はすでに宿題を終えました。", "answer_en": "I have finished my homework."},
+      "1": [{"question_jp": "私はすでに宿題を終えました。", "answer_en": "I have finished my homework."},
         {"question_jp": "彼はその本を読んだことがあります。", "answer_en": "He has read that book."},
         {"question_jp": "私たちはここに来たことがあります。", "answer_en": "We have been here."},
         {"question_jp": "彼女はその映画を見たことがあります。", "answer_en": "She has watched that movie."},
@@ -34,13 +33,8 @@
         {"question_jp": "私はこの道をずっと歩いてきました。", "answer_en": "I have walked this road."},
         {"question_jp": "彼女は新しい映画を見ました。", "answer_en": "She has seen a new movie."},
         {"question_jp": "私たちはその公園に行ったことがあります。", "answer_en": "We have been to that park."},
-        {"question_jp": "彼は新しい本を読み終えました。", "answer_en": "He has finished the new book."}
-      ]
-    },
-    {
-      "level": 2,
-      "questions": [
-        {"question_jp": "私は今朝、宿題を終えました。", "answer_en": "I have finished my homework this morning."},
+        {"question_jp": "彼は新しい本を読み終えました。", "answer_en": "He has finished the new book."}],
+      "2": [        {"question_jp": "私は今朝、宿題を終えました。", "answer_en": "I have finished my homework this morning."},
     {"question_jp": "彼は先週、その本を読んだことがあります。", "answer_en": "He has read that book last week."},
     {"question_jp": "私たちはこの町に何度も来たことがあります。", "answer_en": "We have been to this town many times."},
     {"question_jp": "彼女は最近、その映画を見たことがあります。", "answer_en": "She has watched that movie recently."},
@@ -70,12 +64,8 @@
     {"question_jp": "彼女は新しい映画を最近見ました。", "answer_en": "She has seen a new movie recently."},
     {"question_jp": "私たちはその公園に何度も行ったことがあります。", "answer_en": "We have been to that park many times."},
     {"question_jp": "彼は新しい本を先週読み終えました。", "answer_en": "He has finished the new book last week."}
-      ]
-    },
-    {
-      "level": 3,
-      "questions": [
-{"question_jp": "私はこの街に何度も来たことがあります、仕事で出張するたびに。", "answer_en": "I have been to this town many times whenever I travel for work."},
+],
+      "3": [{"question_jp": "私はこの街に何度も来たことがあります、仕事で出張するたびに。", "answer_en": "I have been to this town many times whenever I travel for work."},
     {"question_jp": "彼女は最近、その映画を見たことがあります、友達に勧められて。", "answer_en": "She has watched that movie recently, as her friend recommended."},
     {"question_jp": "私たちはこの学校に何度も来たことがあります、特別なイベントがあるときに。", "answer_en": "We have visited this school many times when there are special events."},
     {"question_jp": "彼はその本を何度も読んだことがあります、寝る前に落ち着いて。", "answer_en": "He has read that book many times before going to bed quietly."},
@@ -103,8 +93,8 @@
     {"question_jp": "彼女は最近その映画を見ました、友達と一緒にリラックスするために。", "answer_en": "She has watched that movie recently with friends to relax."},
     {"question_jp": "私たちはこの町に何度も来たことがあります、観光地を巡るために。", "answer_en": "We have been to this town many times to visit tourist spots."},
     {"question_jp": "彼はその映画を何度も見たことがあります、週末の夜に家で。", "answer_en": "He has watched that movie many times at home on weekend nights."},
-    {"question_jp": "私は新しいカフェに先週行ったことがあります、静かな時間を過ごすために。", "answer_en": "I have visited the new cafe last week to spend some quiet time."}  ]
+    {"question_jp": "私は新しいカフェに先週行ったことがあります、静かな時間を過ごすために。", "answer_en": "I have visited the new cafe last week to spend some quiet time."}  
+]
     }
-  ]
-} 
-  
+}
+
