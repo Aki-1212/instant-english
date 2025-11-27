@@ -60,6 +60,10 @@ async function loadQuestions(category, subCategory, level) {
   game.style.display = 'block'
 
   try {
+    console.log("category =", category)
+    console.log("subCategory =", subCategory)
+    console.log("filePath =", `./questions/${encodeURIComponent(category)}/${encodeURIComponent(subCategory)}.json`)
+    
     const filePath = `./questions/${encodeURIComponent(category)}/${encodeURIComponent(subCategory)}.json`
     const response = await fetch(filePath)
     if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`)
