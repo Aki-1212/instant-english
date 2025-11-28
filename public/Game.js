@@ -112,13 +112,14 @@ function showQuestion() {
     document.getElementById('block-input-area').style.display = 'block'
     setupWordBlocks(q.answer_en)
   }
-}
 
-if (inputMode === 'flow') {
+  if (inputMode === 'flow') {
   document.getElementById('text-input-area').style.display = 'none'
   document.getElementById('block-input-area').style.display = 'none'
   setupFlowMode()
   return
+}
+  
 }
 
 
