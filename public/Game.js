@@ -243,6 +243,17 @@ function setupFlowMode() {
     speechSynthesis.cancel(); // 前の音声停止
     speechSynthesis.speak(utter);
   };
+
+  // ボタンにクリックイベント
+  btn.onclick = showAnswer;
+
+  // エンターキーでも解答表示
+  document.addEventListener('keydown', function enterHandler(e) {
+    if (inputMode === 'flow' && e.key === 'Enter') {
+      e.preventDefault();
+      showAnswer();
+    }
+  }, { once: true }); // 一度だけ実行
 }
 
 function checkAnswer(userAnswer) {
