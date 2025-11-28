@@ -222,7 +222,7 @@ function setupFlowMode() {
   }
 }
 
-}
+
 
 
 function checkAnswer(userAnswer) {
