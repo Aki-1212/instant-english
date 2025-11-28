@@ -204,13 +204,17 @@ function setupFlowMode() {
   const q = questions[currentIndex];
 
   flowArea.style.display = 'block';
-  resultEl.textContent = '';
+  resultEl.textContent = ''; // 前の問題の表示をクリア
 
-  document.getElementById('flow-show-answer-btn').onclick = () => {
-    if (isFlowSubmitting) return;  // 連打防止
+  // ボタンイベント
+  const btn = document.getElementById('flow-show-answer-btn');
+  btn.onclick = () => {
+    if (isFlowSubmitting) return; // 連打防止
     isFlowSubmitting = true;
 
-    resultEl.textContent = ''; // 前の解答例を消す
+    // 画面に解答例を表示
+    resultEl.textContent = q.answer_en;
+    resultEl.style.color = '#059669'; // 緑表示
 
     // 音声再生
     const utter = new SpeechSynthesisUtterance(q.answer_en);
@@ -223,6 +227,7 @@ function setupFlowMode() {
     const enVoice = voices.find(v => v.lang.startsWith('en'));
     if (enVoice) utter.voice = enVoice;
 
+    // 音声再生完了時に次の問題へ
     utter.onend = () => {
       // 記録（正誤・回答なし）
       window.answerHistory.push({
@@ -235,7 +240,7 @@ function setupFlowMode() {
       showQuestion();
     };
 
-    speechSynthesis.cancel();
+    speechSynthesis.cancel(); // 前の音声停止
     speechSynthesis.speak(utter);
   };
 }
