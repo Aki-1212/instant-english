@@ -206,67 +206,44 @@ const q = questions[currentIndex];
 flowArea.style.display = 'block';
 resultEl.textContent = '';
 
-const showAnswer = () => {
-if (isFlowSubmitting) return;
+document.getElementById('flow-show-answer-btn').onclick = () => {
+if (isFlowSubmitting) return;  // 連打防止
 isFlowSubmitting = true;
 
 ```
-// 解答例を表示
+// 解答例を表示（青文字）
 resultEl.textContent = q.answer_en;
-resultEl.style.color = '#2563eb'; // 青文字
+resultEl.style.color = '#2563eb';
 
+// 音声再生
 const utter = new SpeechSynthesisUtterance(q.answer_en);
 utter.lang = 'en-US';
 utter.rate = 0.9;
 utter.pitch = 1;
 
-const speak = () => {
-  const voices = speechSynthesis.getVoices();
-  const enVoice = voices.find(v => v.lang.startsWith('en'));
-  if (enVoice) utter.voice = enVoice;
+// 英語の声を選択
+const voices = speechSynthesis.getVoices();
+const enVoice = voices.find(v => v.lang.startsWith('en'));
+if (enVoice) utter.voice = enVoice;
 
-  utter.onend = () => {
-    window.answerHistory.push({
-      question: q.question_jp,
-      correctAnswer: q.answer_en,
-    });
+utter.onend = () => {
+  // 記録（正誤・回答なし）
+  window.answerHistory.push({
+    question: q.question_jp,
+    correctAnswer: q.answer_en,
+  });
 
-    currentIndex++;
-    isFlowSubmitting = false;
-    showQuestion();
-  };
-
-  speechSynthesis.cancel();
-  speechSynthesis.speak(utter);
+  currentIndex++;
+  isFlowSubmitting = false;
+  showQuestion();
 };
 
-if (speechSynthesis.getVoices().length === 0) {
-  // voices がまだロードされていない場合
-  speechSynthesis.onvoiceschanged = speak;
-} else {
-  speak();
-}
+speechSynthesis.cancel();
+speechSynthesis.speak(utter);
 ```
 
 };
-
-// ボタン押下
-const btn = document.getElementById('flow-show-answer-btn');
-btn.replaceWith(btn.cloneNode(true)); // 既存イベントリスナーをリセット
-document.getElementById('flow-show-answer-btn').addEventListener('click', showAnswer);
-
-// エンターキー対応
-const onEnter = e => {
-if (e.key === 'Enter') {
-showAnswer();
-document.removeEventListener('keydown', onEnter);
 }
-};
-document.addEventListener('keydown', onEnter);
-}
-
-
-
 
 
 function checkAnswer(userAnswer) {
