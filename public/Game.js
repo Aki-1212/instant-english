@@ -118,8 +118,6 @@ function showQuestion() {
   }
 }
 
-  
-}
 
 
 function setupWordBlocks(answer) {
