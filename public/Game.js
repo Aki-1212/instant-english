@@ -218,7 +218,7 @@ function setupFlowMode() {
 
     // 解答例表示
     resultEl.textContent = q.answer_en;
-    resultEl.style.color = '#2563eb';
+    resultEl.style.color = '#059669';
 
     // 音声再生
     const utter = new SpeechSynthesisUtterance(q.answer_en);
