@@ -67,10 +67,40 @@
       { "question_jp": "私はその時、友達を待っていた。", "answer_en": "I was waiting for my friend at that time." }
     ],
       "3": [
-      
+      { "question_jp": "私は昨日、音楽を聴きながら部屋を掃除していた。", "answer_en": "I was cleaning my room while listening to music yesterday." },
+      { "question_jp": "彼は家に帰っていたときに、突然雨が降ってきた。", "answer_en": "He was walking home when it suddenly started raining." },
+      { "question_jp": "彼女は料理をしていたときに、電話が鳴った。", "answer_en": "She was cooking dinner when the phone rang." },
+      { "question_jp": "私はそのとき友達と話していたので、メッセージに気づかなかった。", "answer_en": "I didn’t notice the message because I was talking with my friend at that time." },
+      { "question_jp": "彼らは公園で遊んでいたけど、雨が降ったので帰った。", "answer_en": "They were playing in the park, but they went home because it started raining." },
+      { "question_jp": "私は昨夜、映画を見ていたときに寝てしまった。", "answer_en": "I was watching a movie last night when I fell asleep." },
+      { "question_jp": "彼は音楽を聴いていたので、私が呼んでも気づかなかった。", "answer_en": "He didn’t notice me calling him because he was listening to music." },
+      { "question_jp": "私は電車を待っていたときに、偶然友達に会った。", "answer_en": "I met a friend by chance while I was waiting for the train." },
+      { "question_jp": "彼女はその時、宿題をしていたので手が離せなかった。", "answer_en": "She couldn’t stop because she was doing her homework at that time." },
+      { "question_jp": "私は昨日の夜、シャワーを浴びていたときに大きな音を聞いた。", "answer_en": "I heard a loud noise while I was taking a shower last night." },
+      { "question_jp": "彼らはゲームをしていたけど、すぐにやめた。", "answer_en": "They were playing a game, but they stopped soon." },
+      { "question_jp": "私は店に向かって歩いていたときに財布を落とした。", "answer_en": "I dropped my wallet while I was walking to the store." },
+      { "question_jp": "彼は本を読んでいたので、周りの音に気づかなかった。", "answer_en": "He didn’t notice the noise around him because he was reading a book." },
+      { "question_jp": "私は勉強していたけど、とても眠かった。", "answer_en": "I was studying, but I was very sleepy." },
+      { "question_jp": "彼女は友達と話していたときに、そのニュースを知った。", "answer_en": "She heard the news while she was talking with her friend." },
+      { "question_jp": "私は携帯を探していたときに、机の上で見つけた。", "answer_en": "I found my phone on the desk while I was looking for it." },
+      { "question_jp": "彼は出かける準備をしていたときに雨が降り始めた。", "answer_en": "It started raining while he was getting ready to go out." },
+      { "question_jp": "私は音楽を聴いていたけど、すぐにやめた。", "answer_en": "I was listening to music, but I stopped soon." },
+      { "question_jp": "彼女は歩いているときに転びそうになった。", "answer_en": "She almost fell while she was walking." },
+      { "question_jp": "私は友達を待っていたけど、彼は来なかった。", "answer_en": "I was waiting for my friend, but he didn’t come." },
+      { "question_jp": "彼らは話し合っていたが、すぐに意見がまとまった。", "answer_en": "They were discussing it, but they agreed quickly." },
+      { "question_jp": "私は昨日、部屋を片付けていたときに古い写真を見つけた。", "answer_en": "I found an old photo while I was cleaning my room yesterday." },
+      { "question_jp": "彼は仕事に向かっていたときに、電話がかかってきた。", "answer_en": "He got a call while he was heading to work." },
+      { "question_jp": "私は音楽を聴いていたので、時間が経つのに気づかなかった。", "answer_en": "I didn’t notice the time passing because I was listening to music." },
+      { "question_jp": "彼女は料理をしていたけど、途中で材料が足りないことに気づいた。", "answer_en": "She was cooking, but she realized she didn’t have enough ingredients." },
+      { "question_jp": "私は本を読んでいたときに眠気がきた。", "answer_en": "I felt sleepy while I was reading a book." },
+      { "question_jp": "彼らは公園で歩いていたときに、きれいな花を見つけた。", "answer_en": "They found a beautiful flower while they were walking in the park." },
+      { "question_jp": "私は机で作業していたときに、コーヒーをこぼした。", "answer_en": "I spilled my coffee while I was working at my desk." },
+      { "question_jp": "彼は急いでいたので、私の話を聞いていなかった。", "answer_en": "He wasn’t listening to me because he was in a hurry." },
+      { "question_jp": "私は帰ろうとしていたときに、雨が降り出した。", "answer_en": "It started raining while I was about to go home." }
     ]
   }
 }
 
 
       
+
