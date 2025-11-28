@@ -220,29 +220,39 @@ utter.lang = 'en-US';
 utter.rate = 0.9;
 utter.pitch = 1;
 
-const voices = speechSynthesis.getVoices();
-const enVoice = voices.find(v => v.lang.startsWith('en'));
-if (enVoice) utter.voice = enVoice;
+const speak = () => {
+  const voices = speechSynthesis.getVoices();
+  const enVoice = voices.find(v => v.lang.startsWith('en'));
+  if (enVoice) utter.voice = enVoice;
 
-utter.onend = () => {
-  window.answerHistory.push({
-    question: q.question_jp,
-    correctAnswer: q.answer_en,
-  });
-  currentIndex++;
-  isFlowSubmitting = false;
-  showQuestion();
+  utter.onend = () => {
+    window.answerHistory.push({
+      question: q.question_jp,
+      correctAnswer: q.answer_en,
+    });
+
+    currentIndex++;
+    isFlowSubmitting = false;
+    showQuestion();
+  };
+
+  speechSynthesis.cancel();
+  speechSynthesis.speak(utter);
 };
 
-speechSynthesis.cancel();
-speechSynthesis.speak(utter);
+if (speechSynthesis.getVoices().length === 0) {
+  // voices がまだロードされていない場合
+  speechSynthesis.onvoiceschanged = speak;
+} else {
+  speak();
+}
 ```
 
 };
 
-// ボタン押下（addEventListenerに変更）
+// ボタン押下
 const btn = document.getElementById('flow-show-answer-btn');
-btn.replaceWith(btn.cloneNode(true)); // 既存のonclickリセット
+btn.replaceWith(btn.cloneNode(true)); // 既存イベントリスナーをリセット
 document.getElementById('flow-show-answer-btn').addEventListener('click', showAnswer);
 
 // エンターキー対応
@@ -254,6 +264,7 @@ document.removeEventListener('keydown', onEnter);
 };
 document.addEventListener('keydown', onEnter);
 }
+
 
 
 
