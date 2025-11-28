@@ -34,6 +34,14 @@ body {
   font-weight: bold;
 }
 
+#back-to-stage-btn2 {
+      background-color: #6b7280;
+      margin-top: 25px;
+    }
+#back-to-stage-btn2:hover {
+    background-color: #374151;
+  }
+
 
 /* ====================== */
 /* 見出し */
@@ -308,5 +316,6 @@ button:disabled {
   .word-btn,
   .selected-word-btn {
     font-size:
+
 
 
