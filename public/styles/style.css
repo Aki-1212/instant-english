@@ -29,6 +29,11 @@ body {
   color: #059669;     /* 緑系（正解と同じ色） */
 }
 
+#result {
+  margin-top: 8px;
+  font-weight: bold;
+}
+
 
 /* ====================== */
 /* 見出し */
@@ -303,4 +308,5 @@ button:disabled {
   .word-btn,
   .selected-word-btn {
     font-size:
+
 
