@@ -199,62 +199,59 @@ function Submit() {
 let isFlowSubmitting = false;
 
 function setupFlowMode() {
-  const flowArea = document.getElementById('flow-area');
-  const resultEl = document.getElementById('result');
-  const q = questions[currentIndex];
+const flowArea = document.getElementById('flow-area');
+const resultEl = document.getElementById('result');
+const q = questions[currentIndex];
 
-  flowArea.style.display = 'block';
-  resultEl.textContent = ''; // 前の問題の表示をクリア
+flowArea.style.display = 'block';
+resultEl.textContent = '';
 
-  // ボタンイベント
-  const btn = document.getElementById('flow-show-answer-btn');
-  btn.onclick = () => {
-    if (isFlowSubmitting) return; // 連打防止
-    isFlowSubmitting = true;
+// 解答表示＆音声再生処理
+const showAnswer = () => {
+if (isFlowSubmitting) return;
+isFlowSubmitting = true;
+resultEl.textContent = '';
 
-    // 画面に解答例を表示
-    resultEl.textContent = q.answer_en;
-    resultEl.style.color = '#059669'; // 緑表示
+```
+const utter = new SpeechSynthesisUtterance(q.answer_en);
+utter.lang = 'en-US';
+utter.rate = 0.9;
+utter.pitch = 1;
 
-    // 音声再生
-    const utter = new SpeechSynthesisUtterance(q.answer_en);
-    utter.lang = 'en-US';
-    utter.rate = 0.9;
-    utter.pitch = 1;
+const voices = speechSynthesis.getVoices();
+const enVoice = voices.find(v => v.lang.startsWith('en'));
+if (enVoice) utter.voice = enVoice;
 
-    // 英語の声を選択
-    const voices = speechSynthesis.getVoices();
-    const enVoice = voices.find(v => v.lang.startsWith('en'));
-    if (enVoice) utter.voice = enVoice;
+utter.onend = () => {
+  window.answerHistory.push({
+    question: q.question_jp,
+    correctAnswer: q.answer_en,
+  });
 
-    // 音声再生完了時に次の問題へ
-    utter.onend = () => {
-      // 記録（正誤・回答なし）
-      window.answerHistory.push({
-        question: q.question_jp,
-        correctAnswer: q.answer_en,
-      });
+  currentIndex++;
+  isFlowSubmitting = false;
+  showQuestion();
+};
 
-      currentIndex++;
-      isFlowSubmitting = false;
-      showQuestion();
-    };
+speechSynthesis.cancel();
+speechSynthesis.speak(utter);
+```
 
-    speechSynthesis.cancel(); // 前の音声停止
-    speechSynthesis.speak(utter);
-  };
+};
 
-  // ボタンにクリックイベント
-  btn.onclick = showAnswer;
+// ボタン押下
+document.getElementById('flow-show-answer-btn').onclick = showAnswer;
 
-  // エンターキーでも解答表示
-  document.addEventListener('keydown', function enterHandler(e) {
-    if (inputMode === 'flow' && e.key === 'Enter') {
-      e.preventDefault();
-      showAnswer();
-    }
-  }, { once: true }); // 一度だけ実行
+// エンターキー対応
+document.addEventListener('keydown', function onEnter(e) {
+if (e.key === 'Enter') {
+showAnswer();
+// このモードが終了したらイベント解除
+document.removeEventListener('keydown', onEnter);
 }
+});
+}
+
 
 function checkAnswer(userAnswer) {
   const correctAnswer = questions[currentIndex].answer_en.trim()
