@@ -9,48 +9,43 @@ body {
   color: #333;
 }
 
-/* ドロップダウンのデザインカスタマイズ */
 select {
-  padding: 10px 16px;
-  font-size: 16px;
+  font-size: 18px;
+  padding: 12px 16px;
+  border-radius: 10px;
   border: 2px solid #f97316;
-  border-radius: 8px;
   background-color: #fff;
   color: #111;
   cursor: pointer;
+  width: 100%;
+  max-width: 400px;
+  margin: 10px auto 20px auto;
+  display: block;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
   transition: all 0.2s ease;
-  appearance: none; /* 矢印のスタイルをリセット */
-  -webkit-appearance: none;
+  -webkit-appearance: none; /* iOS/Chromeのデフォルト矢印を消す */
   -moz-appearance: none;
-  background-image: url('data:image/svg+xml;charset=US-ASCII,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16"><polygon points="0,0 16,0 8,8" style="fill:%23f97316"/></svg>');
-  background-repeat: no-repeat;
-  background-position: right 10px center;
-  background-size: 12px;
+  appearance: none;
+  text-align-last: center; /* 選択文字を中央に */
 }
 
 select:hover {
+  background-color: #fef3c7;
   border-color: #ea580c;
 }
 
 select:focus {
   outline: none;
   border-color: #ea580c;
-  box-shadow: 0 0 5px rgba(249,115,22,0.5);
+  box-shadow: 0 0 0 3px rgba(249,115,22,0.3);
 }
 
-/* ラベルと一緒に並べる場合 */
-.select-group {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  justify-content: center;
-  margin-bottom: 16px;
-}
-
-.select-group label {
-  font-weight: 600;
-  font-size: 16px;
-  color: #374151;
+/* 矢印をCSSで追加（オプション） */
+select::after {
+  content: "▼";
+  position: absolute;
+  right: 16px;
+  pointer-events: none;
 }
 
 /* ---------------------- */
@@ -361,18 +356,12 @@ button:disabled {
   .selected-word-btn {
     font-size:
       }
-  .select-group {
-    justify-content: flex-start;
-    gap: 8px;
-  }
-  .select-group label {
-    width: 100%;
-    text-align: left;
-  }
   select {
-    width: 100%;
+    font-size: 16px;
+    padding: 10px 12px;
+    width: 90%;
   }
-}
+
 
 
 
