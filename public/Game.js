@@ -206,7 +206,7 @@ function setupFlowMode() {
   const q = questions[currentIndex]
 
   document.getElementById('flow-show-answer-btn').onclick = () => {
-    // 解答例を flow-answer-space に表示
+    // 解答例を表示
     flowAnswerSpace.textContent = q.answer_en
 
     // 記録（正誤・回答なし）
@@ -217,10 +217,33 @@ function setupFlowMode() {
       isCorrect: false
     })
 
-    currentIndex++
-    setTimeout(showQuestion, 1200)  // 1.2秒後に次へ
+    // 英語読み上げ
+    if ('speechSynthesis' in window) {
+      const utter = new SpeechSynthesisUtterance(q.answer_en)
+      utter.lang = 'en-US'
+      utter.rate = 0.9
+      utter.pitch = 1
+
+      // 英語音声を優先
+      const voices = speechSynthesis.getVoices()
+      const enVoice = voices.find(v => v.lang.startsWith('en'))
+      if (enVoice) utter.voice = enVoice
+
+      utter.onend = () => {
+        currentIndex++
+        showQuestion()
+      }
+
+      speechSynthesis.cancel()
+      speechSynthesis.speak(utter)
+    } else {
+      // 音声非対応ブラウザは即次へ
+      currentIndex++
+      showQuestion()
+    }
   }
-}
+
+
 
 
 
