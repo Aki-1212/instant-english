@@ -114,6 +114,14 @@ function showQuestion() {
   }
 }
 
+if (inputMode === 'flow') {
+  document.getElementById('text-input-area').style.display = 'none'
+  document.getElementById('block-input-area').style.display = 'none'
+  setupFlowMode()
+  return
+}
+
+
 function setupWordBlocks(answer) {
   const display = document.getElementById('user-block-display')
   const blocks = document.getElementById('word-blocks')
@@ -165,16 +173,16 @@ function shuffle(array) {
 }
 
 // --- 回答送信 ---
-document.getElementById('submit-btn').addEventListener('click', handleSubmit)
-document.getElementById('block-submit-btn').addEventListener('click', handleSubmit)
+document.getElementById('submit-btn').addEventListener('click', Submit)
+document.getElementById('block-submit-btn').addEventListener('click', Submit)
 document.getElementById('answer').addEventListener('keydown', e => {
   if (e.key === 'Enter') {
     e.preventDefault()
-    handleSubmit()
+    Submit()
   }
 })
 
-function handleSubmit() {
+function Submit() {
   if (isSubmitting) return
   isSubmitting = true
 
@@ -186,6 +194,31 @@ function handleSubmit() {
   checkAnswer(userAnswer)
   setTimeout(() => (isSubmitting = false), 500)
 }
+
+function setupFlowMode() {
+  const flowArea = document.getElementById('flow-area')
+  const resultEl = document.getElementById('result')
+
+  flowArea.style.display = 'block'
+  resultEl.textContent = ''
+
+  const q = questions[currentIndex]
+
+  document.getElementById('flow-show-answer-btn').onclick = () => {
+    resultEl.textContent = q.answer_en
+    resultEl.style.color = '#2563eb' // 青文字
+
+    // 記録（正誤・回答なし）
+    window.answerHistory.push({
+      question: q.question_jp,
+      correctAnswer: q.answer_en,
+    })
+
+    currentIndex++
+    setTimeout(showQuestion, 1200)  // 1.2秒後に次へ
+  }
+}
+
 
 function checkAnswer(userAnswer) {
   const correctAnswer = questions[currentIndex].answer_en.trim()
