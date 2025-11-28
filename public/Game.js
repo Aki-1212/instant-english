@@ -199,50 +199,51 @@ function Submit() {
 let isFlowSubmitting = false;
 
 function setupFlowMode() {
-const flowArea = document.getElementById('flow-area');
-const resultEl = document.getElementById('result');
-const q = questions[currentIndex];
+  const flowArea = document.getElementById('flow-area');
+  const resultEl = document.getElementById('result');
 
-flowArea.style.display = 'block';
-resultEl.textContent = '';
+  flowArea.style.display = 'block';
+  resultEl.textContent = '';
 
-document.getElementById('flow-show-answer-btn').onclick = () => {
-if (isFlowSubmitting) return;  // 連打防止
-isFlowSubmitting = true;
+  document.getElementById('flow-show-answer-btn').onclick = () => {
+    if (isFlowSubmitting) return;
+    isFlowSubmitting = true;
 
-```
-// 解答例を表示（青文字）
-resultEl.textContent = q.answer_en;
-resultEl.style.color = '#2563eb';
+    const q = questions[currentIndex];
+    if (!q) {
+      console.error('質問が存在しません');
+      isFlowSubmitting = false;
+      return;
+    }
 
-// 音声再生
-const utter = new SpeechSynthesisUtterance(q.answer_en);
-utter.lang = 'en-US';
-utter.rate = 0.9;
-utter.pitch = 1;
+    // 解答例表示
+    resultEl.textContent = q.answer_en;
+    resultEl.style.color = '#2563eb';
 
-// 英語の声を選択
-const voices = speechSynthesis.getVoices();
-const enVoice = voices.find(v => v.lang.startsWith('en'));
-if (enVoice) utter.voice = enVoice;
+    // 音声再生
+    const utter = new SpeechSynthesisUtterance(q.answer_en);
+    utter.lang = 'en-US';
+    utter.rate = 0.9;
+    utter.pitch = 1;
 
-utter.onend = () => {
-  // 記録（正誤・回答なし）
-  window.answerHistory.push({
-    question: q.question_jp,
-    correctAnswer: q.answer_en,
-  });
+    const voices = speechSynthesis.getVoices();
+    const enVoice = voices.find(v => v.lang.startsWith('en'));
+    if (enVoice) utter.voice = enVoice;
 
-  currentIndex++;
-  isFlowSubmitting = false;
-  showQuestion();
-};
+    utter.onend = () => {
+      window.answerHistory.push({
+        question: q.question_jp,
+        correctAnswer: q.answer_en,
+      });
 
-speechSynthesis.cancel();
-speechSynthesis.speak(utter);
-```
+      currentIndex++;
+      isFlowSubmitting = false;
+      showQuestion();
+    };
 
-};
+    speechSynthesis.cancel();
+    speechSynthesis.speak(utter);
+  };
 }
 
 
