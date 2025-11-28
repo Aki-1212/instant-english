@@ -92,6 +92,10 @@ function showQuestion() {
     return
   }
 
+  // --- 全方式非表示 ---
+  document.getElementById('text-input-area').style.display = 'none'
+  document.getElementById('block-input-area').style.display = 'none'
+  document.getElementById('flow-area').style.display = 'none'
   document.getElementById('result').textContent = ''
   document.getElementById('answer').value = ''
   document.getElementById('user-block-display').textContent = ''
@@ -105,20 +109,15 @@ function showQuestion() {
 
   if (inputMode === 'text') {
     document.getElementById('text-input-area').style.display = 'block'
-    document.getElementById('block-input-area').style.display = 'none'
     setTimeout(() => document.getElementById('answer').focus(), 100)
-  } else {
-    document.getElementById('text-input-area').style.display = 'none'
+  } else if (inputMode === 'block') {
     document.getElementById('block-input-area').style.display = 'block'
     setupWordBlocks(q.answer_en)
+  } else if (inputMode === 'flow') {
+    setupFlowMode()
   }
-
-  if (inputMode === 'flow') {
-  document.getElementById('text-input-area').style.display = 'none'
-  document.getElementById('block-input-area').style.display = 'none'
-  setupFlowMode()
-  return
 }
+
   
 }
 
