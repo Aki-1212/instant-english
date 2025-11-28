@@ -198,26 +198,30 @@ function Submit() {
 
 function setupFlowMode() {
   const flowArea = document.getElementById('flow-area')
-  const resultEl = document.getElementById('result')
+  const flowAnswerSpace = document.getElementById('flow-answer-space')
 
   flowArea.style.display = 'block'
-  resultEl.textContent = ''
+  flowAnswerSpace.textContent = ''  // 初期化
 
   const q = questions[currentIndex]
 
   document.getElementById('flow-show-answer-btn').onclick = () => {
-    resultEl.textContent = q.answer_en
-    resultEl.style.color = '#2563eb' // 青文字
+    // 解答例を flow-answer-space に表示
+    flowAnswerSpace.textContent = q.answer_en
 
     // 記録（正誤・回答なし）
     window.answerHistory.push({
       question: q.question_jp,
       correctAnswer: q.answer_en,
+      userAnswer: '未記入',
+      isCorrect: false
     })
 
     currentIndex++
     setTimeout(showQuestion, 1200)  // 1.2秒後に次へ
   }
+}
+
 }
 
 
