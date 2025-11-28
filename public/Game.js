@@ -199,46 +199,63 @@ function Submit() {
 let isFlowSubmitting = false;
 
 function setupFlowMode() {
-  const flowArea = document.getElementById('flow-area');
-  const resultEl = document.getElementById('result');
-  const q = questions[currentIndex];
+const flowArea = document.getElementById('flow-area');
+const resultEl = document.getElementById('result');
+const q = questions[currentIndex];
 
-  flowArea.style.display = 'block';
-  resultEl.textContent = '';
+flowArea.style.display = 'block';
+resultEl.textContent = '';
 
-  document.getElementById('flow-show-answer-btn').onclick = () => {
-    if (isFlowSubmitting) return;  // 連打防止
-    isFlowSubmitting = true;
+// 解答表示＆音声再生処理
+const showAnswer = () => {
+if (isFlowSubmitting) return;
+isFlowSubmitting = true;
 
-    resultEl.textContent = ''; // 前の解答例を消す
+```
+// 解答例を表示
+resultEl.textContent = q.answer_en;
+resultEl.style.color = '#2563eb'; // 青文字
 
-    // 音声再生
-    const utter = new SpeechSynthesisUtterance(q.answer_en);
-    utter.lang = 'en-US';
-    utter.rate = 0.9;
-    utter.pitch = 1;
+const utter = new SpeechSynthesisUtterance(q.answer_en);
+utter.lang = 'en-US';
+utter.rate = 0.9;
+utter.pitch = 1;
 
-    // 英語の声を選択
-    const voices = speechSynthesis.getVoices();
-    const enVoice = voices.find(v => v.lang.startsWith('en'));
-    if (enVoice) utter.voice = enVoice;
+const voices = speechSynthesis.getVoices();
+const enVoice = voices.find(v => v.lang.startsWith('en'));
+if (enVoice) utter.voice = enVoice;
 
-    utter.onend = () => {
-      // 記録（正誤・回答なし）
-      window.answerHistory.push({
-        question: q.question_jp,
-        correctAnswer: q.answer_en,
-      });
+utter.onend = () => {
+  // 記録（正誤・回答なし）
+  window.answerHistory.push({
+    question: q.question_jp,
+    correctAnswer: q.answer_en,
+  });
 
-      currentIndex++;
-      isFlowSubmitting = false;
-      showQuestion();
-    };
+  currentIndex++;
+  isFlowSubmitting = false;
+  showQuestion();
+};
 
-    speechSynthesis.cancel();
-    speechSynthesis.speak(utter);
-  };
+speechSynthesis.cancel();
+speechSynthesis.speak(utter);
+```
+
+};
+
+// ボタン押下
+document.getElementById('flow-show-answer-btn').onclick = showAnswer;
+
+// エンターキー対応
+const onEnter = e => {
+if (e.key === 'Enter') {
+showAnswer();
+document.removeEventListener('keydown', onEnter);
 }
+};
+document.addEventListener('keydown', onEnter);
+}
+
 
 
 function checkAnswer(userAnswer) {
