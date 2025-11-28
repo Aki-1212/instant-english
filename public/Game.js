@@ -18,9 +18,9 @@ const startBtn = document.getElementById('start-btn')
 
 // --- サブカテゴリ定義 ---
 const subCategories = {
-  "現在時制": ["現在形", "現在進行形", "現在完了形", "現在完了進行形"],
-  "過去時制": ["過去形", "過去進行形", "過去完了形", "過去完了進行形"],
-  "未来時制": ["未来形", "未来進行形", "未来完了形", "未来完了進行形"],
+  "現在時制": ["現在形", "現在進行形", "現在完了形"],
+  "過去時制": ["過去形", "過去進行形", "過去完了形"],
+  "未来時制": ["未来形", "未来進行形", "未来完了形"],
   "日常会話編": ["日常会話編"],
   "旅行編": ["旅行編"],
   "お店編": ["お店編"]
@@ -246,7 +246,7 @@ function showResult() {
   ul.innerHTML = ''
   window.answerHistory.forEach(item => {
     const li = document.createElement('li')
-    li.textContent = `Q: ${item.question}\nあなた: ${item.userAnswer}\n正解: ${item.correctAnswer}`
+    li.textContent = `Q: ${item.question}\n解答例: ${item.correctAnswer}`
     li.className = item.isCorrect ? 'correct' : 'incorrect'
     ul.appendChild(li)
   })
