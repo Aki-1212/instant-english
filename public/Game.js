@@ -242,7 +242,7 @@ function setupFlowMode() {
       showQuestion()
     }
   }
-
+}
 
 
 
