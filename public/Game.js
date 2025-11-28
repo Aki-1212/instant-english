@@ -206,7 +206,6 @@ const q = questions[currentIndex];
 flowArea.style.display = 'block';
 resultEl.textContent = '';
 
-// 解答表示＆音声再生処理
 const showAnswer = () => {
 if (isFlowSubmitting) return;
 isFlowSubmitting = true;
@@ -226,12 +225,10 @@ const enVoice = voices.find(v => v.lang.startsWith('en'));
 if (enVoice) utter.voice = enVoice;
 
 utter.onend = () => {
-  // 記録（正誤・回答なし）
   window.answerHistory.push({
     question: q.question_jp,
     correctAnswer: q.answer_en,
   });
-
   currentIndex++;
   isFlowSubmitting = false;
   showQuestion();
@@ -243,8 +240,10 @@ speechSynthesis.speak(utter);
 
 };
 
-// ボタン押下
-document.getElementById('flow-show-answer-btn').onclick = showAnswer;
+// ボタン押下（addEventListenerに変更）
+const btn = document.getElementById('flow-show-answer-btn');
+btn.replaceWith(btn.cloneNode(true)); // 既存のonclickリセット
+document.getElementById('flow-show-answer-btn').addEventListener('click', showAnswer);
 
 // エンターキー対応
 const onEnter = e => {
@@ -255,6 +254,7 @@ document.removeEventListener('keydown', onEnter);
 };
 document.addEventListener('keydown', onEnter);
 }
+
 
 
 
