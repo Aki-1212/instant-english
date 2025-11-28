@@ -21,6 +21,15 @@ body {
   box-shadow: 0 4px 8px rgba(0,0,0,0.1);
 }
 
+.flow-answer-space {
+  min-height: 40px;   /* ← 常に高さ確保（揺れない） */
+  margin-bottom: 10px;
+  font-size: 20px;
+  font-weight: 600;
+  color: #059669;     /* 緑系（正解と同じ色） */
+}
+
+
 /* ====================== */
 /* 見出し */
 /* ====================== */
@@ -294,3 +303,4 @@ button:disabled {
   .word-btn,
   .selected-word-btn {
     font-size:
+
